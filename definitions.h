@@ -5,6 +5,8 @@
 #ifndef _DEFINITIONS_H_
 #define _DEFINITIONS_H_
 
+#define MAX_DATA 10000
+
 #define CUSTOMER_NAME_MAX_SIZE 10*sizeof(wchar_t)
 #define CUSTOMER_ID_MAX_SIZE 30*sizeof(char)
 
