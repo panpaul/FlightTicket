@@ -3,4 +3,4 @@ project(FlightTicket)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(FlightTicket main.cpp)
+add_executable(FlightTicket main.cpp service/customer.cpp service/customer.h service/flight.cpp service/flight.h definitions.h)
