@@ -6,7 +6,6 @@
 #define FLIGHTTICKET_SERVICE_CUSTOMER_H_
 
 #include "../definitions.h"
-#include <cwchar>
 #include <cstring>
 #include <stdexcept>
 
@@ -16,13 +15,13 @@
 class customer
 {
  private:
-	wchar_t Name[CUSTOMER_NAME_MAX_SIZE / sizeof(wchar_t)]{};
+	char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
 	char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
 	int FlightId{};
 	int SeatId{};
 
  public:
-	explicit customer(wchar_t* name);
+	explicit customer(char* name);
 	~customer();
 	bool query();
 	void new_customer(char* id);

@@ -11,9 +11,10 @@ class flight
 {
  private:
 	int FlightId{};
-	wchar_t FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(wchar_t)]{};
-	wchar_t Departure{};
-	wchar_t Destination{};
+	char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)]{};
+	// TODO define max size
+	char Departure{};
+	char Destination{};
 	int MaxCapacity{};
 	int Current{};
 

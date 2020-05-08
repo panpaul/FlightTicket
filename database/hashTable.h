@@ -5,9 +5,8 @@
 #ifndef _HASHTABLE_H_
 #define _HASHTABLE_H_
 
+#include <cstddef>
 #include "../definitions.h"
-#include <cstdlib>
-#include <cstring>
 
 /*
  * 对于数据库需要索引的是航班号和客户的姓名
@@ -18,13 +17,13 @@
 class hashTable
 {
  private:
-	typedef struct
+	typedef struct NODE
 	{
 		char* data{};
-		struct NODE* next{};
+		NODE* next{};
 	} NODE;
 
-	typedef struct
+	typedef struct HASH_TABLE
 	{
 		NODE* head;
 		NODE** chain;
@@ -45,6 +44,19 @@ class hashTable
  public:
 	hashTable();
 	~hashTable();
+	// TODO use template to combine them
+	NODE* find_flight_name(char* data);
+	NODE* find_customer_id(char* data);
+	NODE* find_customer_name(char* data);
+
+	bool insert_flight_name(char* data);
+	bool insert_customer_id(char* data);
+	bool insert_customer_name(char* data);
+
+	bool delete_flight_name(char* data);
+	bool delete_customer_id(char* data);
+	bool delete_customer_name(char* data);
+
 };
 
 #endif //_HASHTABLE_H_

@@ -7,9 +7,9 @@
 
 #define MAX_DATA 10000
 
-#define CUSTOMER_NAME_MAX_SIZE 10*sizeof(wchar_t)
+#define CUSTOMER_NAME_MAX_SIZE 20*sizeof(char)
 #define CUSTOMER_ID_MAX_SIZE 30*sizeof(char)
 
-#define FLIGHT_NAME_MAX_SIZE 10*sizeof(wchar_t)
+#define FLIGHT_NAME_MAX_SIZE 20*sizeof(char)
 
 #endif //_DEFINITIONS_H_

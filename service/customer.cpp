@@ -4,14 +4,14 @@
 
 #include "customer.h"
 
-customer::customer(wchar_t* name)
+customer::customer(char* name)
 {
-	auto len = wcslen(name);
-	if (len * sizeof(wchar_t) >= CUSTOMER_NAME_MAX_SIZE)
+	auto len = strlen(name);
+	if (len * sizeof(char) >= CUSTOMER_NAME_MAX_SIZE)
 	{
 		throw std::invalid_argument("name too long");
 	}
-	wcscpy(this->Name, name);
+	strcpy(this->Name, name);
 
 	memset(this->Id, 0, CUSTOMER_ID_MAX_SIZE);
 	this->FlightId = 0;
@@ -23,7 +23,7 @@ customer::~customer()
 
 bool customer::query()
 {
-	std::wcout << Name << std::endl;
+	std::cout << Name << std::endl;
 	return true;
 }
 
