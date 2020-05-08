@@ -39,7 +39,8 @@ class hashTable
 	static unsigned int BKDRHash(char* key);
 	static NODE* create_node(size_t size);
 	void create_hash();
-	void destroy_hash();
+	void destroy_node(NODE* node);
+	void destroy_hash(HASH_TABLE* hashTable);
 
  public:
 	hashTable();

@@ -17,7 +17,7 @@ unsigned int hashTable::BKDRHash(char* key)
 	while (*key != 0)
 		hash = hash * seed + (*key++);
 
-	return hash % MAX_DATA; // 10W data
+	return hash % MAX_DATA;
 }
 
 hashTable::NODE* hashTable::create_node(size_t size)
@@ -62,22 +62,30 @@ void hashTable::create_hash()
 	}
 }
 
-void hashTable::destroy_hash()
+void hashTable::destroy_node(NODE* node)
 {
+	if (node == nullptr)return;
+
+	free(node->data);
+	destroy_node(node->next);
+
+	free(node);
+}
+
+void hashTable::destroy_hash(HASH_TABLE* hashTable)
+{
+	if (hashTable == nullptr)return;
+
+	destroy_node(hashTable->head);
+
 	for (int i = 0; i < MAX_DATA; i++)
 	{
-		free(flightName->chain[i]);
-		free(customerId->chain[i]);
-		free(customerName->chain[i]);
+		destroy_node(hashTable->chain[i]);
 	}
 
-	free(flightName->head);
-	free(customerId->head);
-	free(customerName->head);
+	free(hashTable->chain);
 
-	free(flightName->chain);
-	free(customerId->chain);
-	free(customerName->chain);
+	free(hashTable);
 }
 
 hashTable::hashTable()
@@ -111,7 +119,9 @@ hashTable::~hashTable()
 		//dump data
 	}
 	ofs.close();
-	destroy_hash();
+	destroy_hash(flightName);
+	destroy_hash(customerId);
+	destroy_hash(customerName);
 }
 
 hashTable::NODE* hashTable::find_flight_name(char* data)
