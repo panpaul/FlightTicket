@@ -9,6 +9,7 @@
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "");
+	srand(time(NULL));
 
 	auto* name = (char*)"中文English";
 	auto* id = (char*)"123456789012345678";
@@ -18,14 +19,13 @@ int main(int argc, char* argv[])
 	delete c;
 
 	auto hash = new hashTable();
-	char str[10];
-	for (int i = 1; i <= 100; i++)
+	char str[30];
+	for (int i = 1; i <= MAX_DATA - 1; i++)
 	{
-		sprintf(str, "%d", i);
-		hash->insert_customer_id(str);
+		//hash->insert_customer_id(str);
 	}
-	char find[10] = "5";
-	printf("%s\n", hash->find_customer_id(find)->data);
+
+	printf("%s\n", hash->find_customer_id("QA0FVdUTmIidAoQ4wrGm")->data);
 
 	delete hash;
 

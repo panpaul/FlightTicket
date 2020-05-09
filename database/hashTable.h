@@ -5,8 +5,10 @@
 #ifndef _HASHTABLE_H_
 #define _HASHTABLE_H_
 
-#include <cstddef>
 #include "../definitions.h"
+#include <cstddef>
+#include <cstring>
+#include <fstream>
 
 /*
  * 对于数据库需要索引的是航班号和客户的姓名
@@ -25,7 +27,8 @@ class hashTable
 
 	typedef struct HASH_TABLE
 	{
-		NODE* head;
+		size_t size;
+		NODE* head; // 临时存放节点,方便内存管理
 		NODE** chain;
 	} HASH_TABLE;
 
@@ -36,16 +39,22 @@ class hashTable
 	 */
 	HASH_TABLE* flightName{}, * customerId{}, * customerName{};
 
-	static unsigned int BKDRHash(char* key);
+	static unsigned int BKDRHash(const char* key);
+
 	static NODE* create_node(size_t size);
 	void create_hash();
+
 	void destroy_node(NODE* node);
 	void destroy_hash(HASH_TABLE* hashTable);
 
+	void save(HASH_TABLE* hashTable, const std::string& file);
+	void read(HASH_TABLE* hashTable, const std::string& file);
+
+	bool insert(HASH_TABLE* hashTable, const char* data);
  public:
 	hashTable();
 	~hashTable();
-	// TODO use template to combine them
+	// TODO combine them
 	NODE* find_flight_name(char* data);
 	NODE* find_customer_id(char* data);
 	NODE* find_customer_name(char* data);
