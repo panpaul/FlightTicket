@@ -10,6 +10,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <cstring>
 #include "linearEngine.h"
 
@@ -136,4 +137,125 @@ void db::linearEngine::loadOrderVec()
 	}
 
 	ifs.close();
+}
+
+void db::linearEngine::insertFlight(struct Flight flight)
+{
+	flightVec.push_back(flight);
+}
+
+void db::linearEngine::insertCustomer(db::Customer customer)
+{
+	customerVec.push_back(customer);
+}
+
+void db::linearEngine::insertOrder(db::Order order)
+{
+	orderVec.push_back(order);
+}
+
+db::Flight db::linearEngine::queryFlight(struct Flight flight)
+{
+	auto iter = flightVec.end();
+	if (flight.FlightId != 0)
+	{
+		iter = std::find_if(flightVec.begin(), flightVec.end(),
+			[flight](struct Flight flightCmp)
+			{ return flight.FlightId == flightCmp.FlightId; }
+		);
+	}
+	else if (flight.FlightName[0] != '\0')
+	{
+		iter = std::find_if(flightVec.begin(), flightVec.end(),
+			[flight](struct Flight flightCmp)
+			{ return !strcmp(flight.FlightName, flightCmp.FlightName); }
+		);
+	}
+	else if (flight.Departure[0] != '\0')
+	{
+		iter = std::find_if(flightVec.begin(), flightVec.end(),
+			[flight](struct Flight flightCmp)
+			{ return !strcmp(flight.Departure, flightCmp.Departure); }
+		);
+	}
+	else if (flight.Destination[0] != '\0')
+	{
+		iter = std::find_if(flightVec.begin(), flightVec.end(),
+			[flight](struct Flight flightCmp)
+			{ return !strcmp(flight.Destination, flightCmp.Destination); }
+		);
+	}
+
+	if (iter != flightVec.end())
+	{
+		return *iter;
+	}
+	else
+	{ return Flight{ 0, "", "", "", 0, 0 }; }
+}
+
+db::Customer db::linearEngine::queryCustomer(db::Customer customer)
+{
+	auto iter = customerVec.end();
+	if (customer.CustomerId != 0)
+	{
+		iter = std::find_if(customerVec.begin(), customerVec.end(),
+			[customer](struct Customer customerCmp)
+			{ return customer.CustomerId == customerCmp.CustomerId; }
+		);
+	}
+	else if (customer.Name[0] != '\0')
+	{
+		iter = std::find_if(customerVec.begin(), customerVec.end(),
+			[customer](struct Customer customerCmp)
+			{ return !strcmp(customer.Name, customerCmp.Name); }
+		);
+	}
+	else if (customer.Id[0] != '\0')
+	{
+		iter = std::find_if(customerVec.begin(), customerVec.end(),
+			[customer](struct Customer customerCmp)
+			{ return !strcmp(customer.Id, customerCmp.Id); }
+		);
+	}
+
+	if (iter != customerVec.end())
+	{
+		return *iter;
+	}
+	else
+	{ return Customer{ 0, "", "" }; }
+}
+
+db::Order db::linearEngine::queryOrder(db::Order order)
+{
+	auto iter = orderVec.end();
+	if (order.OrderId != 0)
+	{
+		iter = std::find_if(orderVec.begin(), orderVec.end(),
+			[order](struct Order orderCmp)
+			{ return order.OrderId == orderCmp.OrderId; }
+		);
+	}
+	else if (order.CustomerId != 0)
+	{
+		iter = std::find_if(orderVec.begin(), orderVec.end(),
+			[order](struct Order orderCmp)
+			{ return order.CustomerId == orderCmp.CustomerId; }
+		);
+	}
+	else if (order.FlightId != 0)
+	{
+		iter = std::find_if(orderVec.begin(), orderVec.end(),
+			[order](struct Order orderCmp)
+			{ return order.FlightId == orderCmp.FlightId; }
+		);
+	}
+
+	if (iter != orderVec.end())
+	{
+		return *iter;
+	}
+	else
+	{ return Order{ 0, 0, 0, 0 }; }
 }

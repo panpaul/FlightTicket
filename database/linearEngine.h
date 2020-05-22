@@ -29,6 +29,14 @@ namespace db
 		void loadCustomerVec();
 		void loadOrderVec();
 
+		void insertFlight(struct Flight flight);
+		void insertCustomer(struct Customer customer);
+		void insertOrder(struct Order order);
+
+		struct Flight queryFlight(struct Flight flight);
+		struct Customer queryCustomer(struct Customer customerCmp);
+		struct Order queryOrder(struct Order order);
+
 	 private:
 		std::string basePath;
 		std::vector<Flight> flightVec;

@@ -6,31 +6,27 @@
 #include "database/hashTable.h"
 #include "database/linearEngine.h"
 #include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "");
-	srand(time(NULL));
-
-	auto* name = (char*)"中文English";
-	auto* id = (char*)"123456789012345678";
-	auto c = new customer(name);
-	c->new_customer(id);
-	c->query();
-	delete c;
-
-	auto hash = new db::hashTable();
-	char str[30];
-	for (int i = 1; i <= MAX_DATA - 1; i++)
-	{
-		//hash->insert_customer_id(str);
-	}
-
-	printf("%s\n", hash->find_customer_id("QA0FVdUTmIidAoQ4wrGm")->data);
-
-	delete hash;
 
 	auto le = new db::linearEngine(".");
+	le->insertFlight(db::Flight{ 1, "hello", "dep1", "des1", 2, 1 });
+	le->insertFlight(db::Flight{ 2, "world", "dep2", "des2", 2, 1 });
+	le->insertFlight(db::Flight{ 3, "test", "dep3", "des3", 2, 1 });
+
+	cout << le->queryFlight(db::Flight{ 0, "hello", "", "", 1, 2 }).FlightName << endl;
+	cout << le->queryFlight(db::Flight{ 2, "", "", "", 1, 2 }).FlightName << endl;
+	cout << le->queryFlight(db::Flight{ 0, "", "", "des3", 0, 0 }).FlightName << endl;
+
+	cout << le->queryFlight(db::Flight{}).FlightName << endl;
+	cout << le->queryFlight(db::Flight{ 0, "1" }).FlightName << endl;
+	cout << le->queryFlight(db::Flight{ 0, "", "1" }).FlightName << endl;
+
 	delete le;
 
 	return 0;
