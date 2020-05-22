@@ -161,10 +161,10 @@ void db::linearEngine::loadOrderVec()
  * @param flight the struct of flight to be inserted
  * @return true for success and false for error
  */
-bool db::linearEngine::insertFlight(struct Flight flight)
+bool db::linearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
-	auto f = queryFlight(flight);
+	auto f = QueryFlight(flight);
 	if (f.FlightId != 0) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
@@ -182,10 +182,10 @@ bool db::linearEngine::insertFlight(struct Flight flight)
  * @param customer the struct of customer to be inserted
  * @return true for success and false for error
  */
-bool db::linearEngine::insertCustomer(db::Customer customer)
+bool db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
-	auto c = queryCustomer(customer);
+	auto c = QueryCustomer(customer);
 	if (c.CustomerId != 0) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
@@ -204,10 +204,10 @@ bool db::linearEngine::insertCustomer(db::Customer customer)
  * @param order the struct of order to be inserted
  * @return true for success and false for error
  */
-bool db::linearEngine::insertOrder(db::Order order)
+bool db::linearEngine::InsertOrder(db::Order order)
 {
 	order.OrderId = 0;
-	auto o = queryOrder(order);
+	auto o = QueryOrder(order);
 	if (o.OrderId != 0) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
@@ -225,7 +225,7 @@ bool db::linearEngine::insertOrder(db::Order order)
  * @param flight the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Flight db::linearEngine::queryFlight(struct Flight flight)
+db::Flight db::linearEngine::QueryFlight(struct Flight flight)
 {
 	auto iter = flightVec.end();
 	if (flight.FlightId != 0)
@@ -271,7 +271,7 @@ db::Flight db::linearEngine::queryFlight(struct Flight flight)
  * @param customer the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Customer db::linearEngine::queryCustomer(db::Customer customer)
+db::Customer db::linearEngine::QueryCustomer(db::Customer customer)
 {
 	auto iter = customerVec.end();
 	if (customer.CustomerId != 0)
@@ -310,7 +310,7 @@ db::Customer db::linearEngine::queryCustomer(db::Customer customer)
  * @param order the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Order db::linearEngine::queryOrder(db::Order order)
+db::Order db::linearEngine::QueryOrder(db::Order order)
 {
 	auto iter = orderVec.end();
 	if (order.OrderId != 0)
@@ -341,4 +341,125 @@ db::Order db::linearEngine::queryOrder(db::Order order)
 	}
 	else
 	{ return Order{ 0, 0, 0, 0 }; }
+}
+
+/**
+ * @brief delete a flight info from memory
+ * @param flightId the flight info to be deleted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::DeleteFlight(int flightId)
+{
+	for (auto iter = flightVec.begin(); iter != flightVec.end(); ++iter)
+	{
+		if (iter->FlightId == flightId)
+		{
+			flightVec.erase(iter);
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief delete a customer info from memory
+ * @param customerId the flight info to be deleted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::DeleteCustomer(int customerId)
+{
+	for (auto iter = customerVec.begin(); iter != customerVec.end(); ++iter)
+	{
+		if (iter->CustomerId == customerId)
+		{
+			customerVec.erase(iter);
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief delete an order info from memory
+ * @param orderId the flight info to be deleted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::DeleteOrder(int orderId)
+{
+	for (auto iter = orderVec.begin(); iter != orderVec.end(); ++iter)
+	{
+		if (iter->OrderId == orderId)
+		{
+			orderVec.erase(iter);
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief update flight info
+ * @details FlightId must not be zero
+ * @param flight update info
+ * @return true for success and false for error
+ */
+bool db::linearEngine::UpdateFlight(db::Flight flight)
+{
+	if (flight.FlightId == 0)return false;
+	for (auto& i : flightVec)
+	{
+		if (i.FlightId == flight.FlightId)
+		{
+			memcpy(i.FlightName, flight.FlightName, FLIGHT_NAME_MAX_SIZE);
+			memcpy(i.Departure, flight.Departure, FLIGHT_DEPARTURE_MAX_SIZE);
+			memcpy(i.Destination, flight.Destination, FLIGHT_DESTINATION_MAX_SIZE);
+			i.MaxCapacity = flight.MaxCapacity;
+			i.Current = flight.Current;
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief update customer info
+ * @details CustomerId must not be zero
+ * @param customer update info
+ * @return true for success and false for error
+ */
+bool db::linearEngine::UpdateCustomer(db::Customer customer)
+{
+	if (customer.CustomerId == 0)return false;
+	for (auto& i : customerVec)
+	{
+		if (i.CustomerId == customer.CustomerId)
+		{
+			memcpy(i.Name, customer.Name, CUSTOMER_NAME_MAX_SIZE);
+			memcpy(i.Id, customer.Id, CUSTOMER_ID_MAX_SIZE);
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief update order info
+ * @details OrderId must not be zero
+ * @param order update info
+ * @return true for success and false for error
+ */
+bool db::linearEngine::UpdateOrder(db::Order order)
+{
+	if (order.OrderId == 0)return false;
+	for (auto& i : orderVec)
+	{
+		if (i.OrderId == order.OrderId)
+		{
+			i.CustomerId = order.CustomerId;
+			i.FlightId = order.FlightId;
+			i.SeatId = order.SeatId;
+			return true;
+		}
+	}
+	return false;
 }

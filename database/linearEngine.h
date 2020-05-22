@@ -26,19 +26,21 @@ namespace db
 		explicit linearEngine(const std::string& path);
 		~linearEngine();
 
-		template<typename T>
-		void saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file);
-		void loadFlightVec();
-		void loadCustomerVec();
-		void loadOrderVec();
+		bool InsertFlight(struct Flight flight);
+		bool InsertCustomer(struct Customer customer);
+		bool InsertOrder(struct Order order);
 
-		bool insertFlight(struct Flight flight);
-		bool insertCustomer(struct Customer customer);
-		bool insertOrder(struct Order order);
+		struct Flight QueryFlight(struct Flight flight);
+		struct Customer QueryCustomer(struct Customer customer);
+		struct Order QueryOrder(struct Order order);
 
-		struct Flight queryFlight(struct Flight flight);
-		struct Customer queryCustomer(struct Customer customerCmp);
-		struct Order queryOrder(struct Order order);
+		bool DeleteFlight(int flightId);
+		bool DeleteCustomer(int customerId);
+		bool DeleteOrder(int orderId);
+
+		bool UpdateFlight(struct Flight flight);
+		bool UpdateCustomer(struct Customer customer);
+		bool UpdateOrder(struct Order order);
 
 	 private:
 		std::string basePath;
@@ -46,6 +48,12 @@ namespace db
 		std::vector<Customer> customerVec;
 		std::vector<Order> orderVec;
 		int flightIdCnt = 0, customerIdCnt = 0, orderIdCnt = 0;
+
+		template<typename T>
+		void saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file);
+		void loadFlightVec();
+		void loadCustomerVec();
+		void loadOrderVec();
 	};
 }
 #endif //_LINEARENGINE_H_
