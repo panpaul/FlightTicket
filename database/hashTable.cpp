@@ -1,12 +1,21 @@
 //
-// Created by panyuxuan on 2020/5/7.
-//
+/**
+ * @file hashTable.h
+ * @brief a simple hashtable
+ * @details use std::map instead
+ * @author Paul
+ * @email panyuxuan@hotmail.com
+ * @version 0.0.1
+ * @date 2020-5-7
+ */
 
 #include "hashTable.h"
 
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+
+using namespace db;
 
 unsigned int hashTable::BKDRHash(const char* key)
 {
@@ -49,9 +58,9 @@ void hashTable::create_hash()
 	customerId->head = create_node(CUSTOMER_ID_MAX_SIZE);
 	customerName->head = create_node(CUSTOMER_NAME_MAX_SIZE);
 
-	flightName->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE*));
-	customerId->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE*));
-	customerName->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE*));
+	flightName->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE * ));
+	customerId->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE * ));
+	customerName->chain = (NODE**)malloc(MAX_DATA * sizeof(NODE * ));
 
 	for (int i = 0; i < MAX_DATA; i++)
 	{
@@ -98,24 +107,24 @@ void hashTable::save(hashTable::HASH_TABLE* hashTable, const std::string& file)
 	{
 		// failed to open
 		std::cerr << "Failed to open " << file << std::endl;
+		return;
 	}
-	else
+
+	//dump data
+	for (int i = 0; i < MAX_DATA; i++) // Currently a stupid method
 	{
-		//dump data
-		for (int i = 0; i < MAX_DATA; i++) // Currently a stupid method
+		if (hashTable->chain[i] == nullptr)continue;
+		hashTable->head = hashTable->chain[i];
+		while (hashTable->head != nullptr)
 		{
-			if (hashTable->chain[i] == nullptr)continue;
-			hashTable->head = hashTable->chain[i];
-			while (hashTable->head != nullptr)
+			if (hashTable->head->data != nullptr)
 			{
-				if (hashTable->head->data != nullptr)
-				{
-					ofs << hashTable->head->data << "\n";
-				}
-				hashTable->head = hashTable->head->next;
+				ofs << hashTable->head->data << "\n";
 			}
+			hashTable->head = hashTable->head->next;
 		}
 	}
+
 	ofs.close();
 }
 
@@ -127,15 +136,15 @@ void hashTable::read(hashTable::HASH_TABLE* hashTable, const std::string& file)
 	{
 		// failed to open
 		std::cerr << "Failed to open " << file << std::endl;
+		return;
 	}
-	else
+
+	while (!ifs.eof())
 	{
-		while (!ifs.eof())
-		{
-			ifs >> data;
-			insert(hashTable, data.c_str());
-		}
+		ifs >> data;
+		insert(hashTable, data.c_str());
 	}
+
 	ifs.close();
 }
 

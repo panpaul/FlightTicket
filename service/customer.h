@@ -15,6 +15,7 @@
 class customer
 {
  private:
+	int CustomerId{};
 	char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
 	char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
 	int FlightId{};

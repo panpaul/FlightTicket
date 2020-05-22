@@ -13,8 +13,8 @@ class flight
 	int FlightId{};
 	char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)]{};
 	// TODO define max size
-	char Departure{};
-	char Destination{};
+	char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)]{};
+	char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)]{};
 	int MaxCapacity{};
 	int Current{};
 
