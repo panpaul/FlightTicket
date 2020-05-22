@@ -22,8 +22,8 @@ namespace db
 		char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)];
 		char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)];
 		char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)];
-		int MaxCapacity; /// max passengers num
-		int Current; /// current ordered passengers num
+		int MaxCapacity; ///< max passengers num
+		int Current; ///< current ordered passengers num
 	};
 	const int FLIGHT_SIZE = sizeof(Flight);
 
@@ -31,7 +31,7 @@ namespace db
 	{
 		int CustomerId;
 		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)];
-		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; /// passport id / ID card number
+		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; ///< passport id / ID card number
 	};
 	const int CUSTOMER_SIZE = sizeof(Customer);
 

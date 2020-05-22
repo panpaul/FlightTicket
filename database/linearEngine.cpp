@@ -29,6 +29,14 @@ db::linearEngine::~linearEngine()
 	saveVec(orderVec, orderIdCnt, ORDER_SIZE, basePath + "/order.data");
 }
 
+/**
+ * @brief save flight/customer/order vector info into dot data files
+ * @tparam T type of the vector
+ * @param vec the vector to be saved
+ * @param cnt auto increment id number
+ * @param size size of a single line of datium
+ * @param file the file path of the data
+ */
 template<typename T>
 void db::linearEngine::saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file)
 {
@@ -147,45 +155,76 @@ void db::linearEngine::loadOrderVec()
 	ifs.close();
 }
 
-void db::linearEngine::insertFlight(struct Flight flight)
+/**
+ * @brief insert a flight info into memory
+ * @details the field flightId will be auto computed and no duplicate data will be inserted
+ * @param flight the struct of flight to be inserted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::insertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
 	auto f = queryFlight(flight);
 	if (f.FlightId != 0) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
-		return;
+		return false;
 	}
 	flight.FlightId = ++flightIdCnt;
 	flightVec.push_back(flight);
+
+	return true;
 }
 
-void db::linearEngine::insertCustomer(db::Customer customer)
+/**
+ * @brief insert a customer info into memory
+ * @details the field customerId will be auto computed and no duplicate data will be inserted
+ * @param customer the struct of customer to be inserted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::insertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
 	auto c = queryCustomer(customer);
 	if (c.CustomerId != 0) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
-		return;
+		return false;
 	}
 	customer.CustomerId = ++customerIdCnt;
 	customerVec.push_back(customer);
+
+	return true;
 }
 
-void db::linearEngine::insertOrder(db::Order order)
+/**
+ * @brief insert a order info into memory
+ * @details (it will not check whether customerId or flightId existed or not)
+ * the field orderId will be auto computed and no duplicate data will be inserted
+ * @param order the struct of order to be inserted
+ * @return true for success and false for error
+ */
+bool db::linearEngine::insertOrder(db::Order order)
 {
 	order.OrderId = 0;
 	auto o = queryOrder(order);
 	if (o.OrderId != 0) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
-		return;
+		return false;
 	}
 	order.OrderId = ++orderIdCnt;
 	orderVec.push_back(order);
+
+	return true;
 }
 
+/**
+ * @brief query a flight info
+ * @details it will match the first none "NULL" field
+ * @param flight the query parameter
+ * @return the desired data for success or "NULL" for error
+ */
 db::Flight db::linearEngine::queryFlight(struct Flight flight)
 {
 	auto iter = flightVec.end();
@@ -226,6 +265,12 @@ db::Flight db::linearEngine::queryFlight(struct Flight flight)
 	{ return Flight{ 0, "", "", "", 0, 0 }; }
 }
 
+/**
+ * @brief query a customer info
+ * @details it will match the first none "NULL" field
+ * @param customer the query parameter
+ * @return the desired data for success or "NULL" for error
+ */
 db::Customer db::linearEngine::queryCustomer(db::Customer customer)
 {
 	auto iter = customerVec.end();
@@ -259,6 +304,12 @@ db::Customer db::linearEngine::queryCustomer(db::Customer customer)
 	{ return Customer{ 0, "", "" }; }
 }
 
+/**
+ * @brief query an order info
+ * @details it will match the first none "NULL" field
+ * @param order the query parameter
+ * @return the desired data for success or "NULL" for error
+ */
 db::Order db::linearEngine::queryOrder(db::Order order)
 {
 	auto iter = orderVec.end();

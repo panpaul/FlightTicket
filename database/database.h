@@ -14,6 +14,9 @@
 
 namespace db
 {
+	/**
+	 * @brief interface the database
+	 */
 	class database
 	{
 	 public:
