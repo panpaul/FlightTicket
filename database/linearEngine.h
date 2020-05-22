@@ -22,8 +22,13 @@ namespace db
 	 public:
 		explicit linearEngine(const std::string& path);
 		~linearEngine();
-		void loadFlight();
-		void saveFlight();
+
+		template<typename T>
+		void saveVec(std::vector<T>& vec, int size, const std::string& file);
+		void loadFlightVec();
+		void loadCustomerVec();
+		void loadOrderVec();
+
 	 private:
 		std::string basePath;
 		std::vector<Flight> flightVec;
