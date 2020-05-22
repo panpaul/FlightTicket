@@ -24,7 +24,7 @@ namespace db
 		~linearEngine();
 
 		template<typename T>
-		void saveVec(std::vector<T>& vec, int size, const std::string& file);
+		void saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file);
 		void loadFlightVec();
 		void loadCustomerVec();
 		void loadOrderVec();
@@ -42,6 +42,7 @@ namespace db
 		std::vector<Flight> flightVec;
 		std::vector<Customer> customerVec;
 		std::vector<Order> orderVec;
+		int flightIdCnt = 0, customerIdCnt = 0, orderIdCnt = 0;
 	};
 }
 #endif //_LINEARENGINE_H_

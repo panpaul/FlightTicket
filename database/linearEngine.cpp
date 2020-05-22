@@ -24,13 +24,13 @@ db::linearEngine::linearEngine(const std::string& path)
 
 db::linearEngine::~linearEngine()
 {
-	saveVec(flightVec, FLIGHT_SIZE, basePath + "/flight.data");
-	saveVec(customerVec, CUSTOMER_SIZE, basePath + "/customer.data");
-	saveVec(orderVec, ORDER_SIZE, basePath + "/order.data");
+	saveVec(flightVec, flightIdCnt, FLIGHT_SIZE, basePath + "/flight.data");
+	saveVec(customerVec, customerIdCnt, CUSTOMER_SIZE, basePath + "/customer.data");
+	saveVec(orderVec, orderIdCnt, ORDER_SIZE, basePath + "/order.data");
 }
 
 template<typename T>
-void db::linearEngine::saveVec(std::vector<T>& vec, int size, const std::string& file)
+void db::linearEngine::saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file)
 {
 	std::ofstream ofs(file,
 		std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
@@ -40,6 +40,8 @@ void db::linearEngine::saveVec(std::vector<T>& vec, int size, const std::string&
 		std::cerr << "Failed to open " << file << std::endl;
 		return;
 	}
+
+	ofs.write(reinterpret_cast<const char*>(&cnt), sizeof(int));
 
 	for (auto& i : vec)
 	{
@@ -61,6 +63,8 @@ void db::linearEngine::loadFlightVec()
 		std::cerr << "Failed to open " << basePath + "/flight.data" << std::endl;
 		return;
 	}
+
+	ifs.read(reinterpret_cast<char*>(&flightIdCnt), sizeof(int));
 
 	while (ifs.read(data, FLIGHT_SIZE))
 	{
@@ -95,6 +99,8 @@ void db::linearEngine::loadCustomerVec()
 		return;
 	}
 
+	ifs.read(reinterpret_cast<char*>(&customerIdCnt), sizeof(int));
+
 	while (ifs.read(data, FLIGHT_SIZE))
 	{
 		int cnt = 0;
@@ -122,6 +128,8 @@ void db::linearEngine::loadOrderVec()
 		return;
 	}
 
+	ifs.read(reinterpret_cast<char*>(&orderIdCnt), sizeof(int));
+
 	while (ifs.read(data, FLIGHT_SIZE))
 	{
 		int cnt = 0;
@@ -141,16 +149,40 @@ void db::linearEngine::loadOrderVec()
 
 void db::linearEngine::insertFlight(struct Flight flight)
 {
+	flight.FlightId = 0;
+	auto f = queryFlight(flight);
+	if (f.FlightId != 0) // existed
+	{
+		std::cerr << "Flight Existed" << std::endl;
+		return;
+	}
+	flight.FlightId = ++flightIdCnt;
 	flightVec.push_back(flight);
 }
 
 void db::linearEngine::insertCustomer(db::Customer customer)
 {
+	customer.CustomerId = 0;
+	auto c = queryCustomer(customer);
+	if (c.CustomerId != 0) // existed
+	{
+		std::cerr << "Customer Existed" << std::endl;
+		return;
+	}
+	customer.CustomerId = ++customerIdCnt;
 	customerVec.push_back(customer);
 }
 
 void db::linearEngine::insertOrder(db::Order order)
 {
+	order.OrderId = 0;
+	auto o = queryOrder(order);
+	if (o.OrderId != 0) // existed
+	{
+		std::cerr << "Order Existed" << std::endl;
+		return;
+	}
+	order.OrderId = ++orderIdCnt;
 	orderVec.push_back(order);
 }
 

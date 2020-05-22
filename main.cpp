@@ -23,9 +23,9 @@ int main(int argc, char* argv[])
 	cout << le->queryFlight(db::Flight{ 2, "", "", "", 1, 2 }).FlightName << endl;
 	cout << le->queryFlight(db::Flight{ 0, "", "", "des3", 0, 0 }).FlightName << endl;
 
-	cout << le->queryFlight(db::Flight{}).FlightName << endl;
-	cout << le->queryFlight(db::Flight{ 0, "1" }).FlightName << endl;
-	cout << le->queryFlight(db::Flight{ 0, "", "1" }).FlightName << endl;
+	cout << (le->queryFlight(db::Flight{}).FlightId == 0 ? "PASS" : "FAILED") << endl;
+	cout << (le->queryFlight(db::Flight{ 0, "1" }).FlightId == 0 ? "PASS" : "FAILED") << endl;
+	cout << (le->queryFlight(db::Flight{ 0, "", "1" }).FlightId == 0 ? "PASS" : "FAILED") << endl;
 
 	delete le;
 
