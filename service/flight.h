@@ -6,24 +6,24 @@
 #define FLIGHTTICKET_SERVICE_FLIGHT_H_
 
 #include "../definitions.h"
+#include "service.h"
 
 class flight
-{
- private:
+{ // TODO make a wrapper function
+ public:
 	int FlightId{};
 	char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)]{};
-	// TODO define max size
 	char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)]{};
 	char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)]{};
 	int MaxCapacity{};
 	int Current{};
 
- public:
 	flight();
 	~flight();
-	static flight* query();
-	static bool new_flight();
-	static bool delete_flight();
+	bool query(const char* dest);
+	bool new_flight();
+	bool delete_flight();
+
 };
 
 #endif //FLIGHTTICKET_SERVICE_FLIGHT_H_

@@ -32,4 +32,4 @@ add_executable(FlightTicket
         database/database.cpp database/database.h
         database/linearEngine.cpp database/linearEngine.h
         database/struct.h
-        )
+        service/service.h)

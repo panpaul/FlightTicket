@@ -3,15 +3,27 @@
 //
 
 #include "flight.h"
+#include <cstring>
 
 flight::flight()
 {
 
 }
 
-flight* flight::query()
+bool flight::query(const char* dest)
 {
-	return nullptr;
+	db::Flight flightStruct{};
+	strcpy(flightStruct.Destination, dest);
+	auto flight = engine->QueryFlight(flightStruct);
+	if (flight.FlightId == 0)return false;
+
+	this->FlightId = flight.FlightId;
+	strcpy(this->FlightName, flight.FlightName);
+	strcpy(this->Departure, flight.Departure);
+	strcpy(this->Destination, flight.Destination);
+	this->MaxCapacity = flight.MaxCapacity;
+	this->Current = flight.Current;
+	return true;
 }
 
 bool flight::new_flight()

@@ -1,4 +1,3 @@
-//
 /**
  * @file hashTable.h
  * @brief a simple hashtable
@@ -7,6 +6,7 @@
  * @email panyuxuan@hotmail.com
  * @version 0.0.1
  * @date 2020-5-7
+ * @deprecated
  */
 
 #include "hashTable.h"

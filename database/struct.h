@@ -32,6 +32,8 @@ namespace db
 		int CustomerId;
 		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)];
 		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; ///< passport id / ID card number
+		int FlightId;
+		int SeatId;
 	};
 	const int CUSTOMER_SIZE = sizeof(Customer);
 

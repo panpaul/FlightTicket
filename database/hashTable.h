@@ -6,6 +6,7 @@
  * @email panyuxuan@hotmail.com
  * @version 0.0.1
  * @date 2020-5-7
+ * @deprecated
  */
 
 #ifndef _HASHTABLE_H_
