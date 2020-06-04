@@ -5,7 +5,7 @@
 #ifndef _SERVICE_H_
 #define _SERVICE_H_
 
-#include "../database/linearEngine.h"
+#include "../model/linearEngine.h"
 
 static auto engine = new db::linearEngine(".");
 

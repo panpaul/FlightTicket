@@ -7,6 +7,7 @@
 
 #include "service.h"
 #include "../model/definitions.h"
+#include "../model/linearEngine.h"
 #include <cstring>
 #include <stdexcept>
 
@@ -16,18 +17,18 @@
 class customer
 { // TODO make a wrapper function
  public:
-	int CustomerId{};
-	char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
-	char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
-	int FlightId{};
-	int SeatId{};
-
+	static int counter;
 	customer();
 	customer(char* name, char* id);
 	~customer();
-	bool query();
-	void new_customer(const char* name, const char* id);
-	bool order(int flight_id);
+	void InsertCustomer();
+	static void QueryCustomer(char* name , char* id);
+	void QueryCustomer();
+	void MakeOrder();
+ private:
+	int CustomerID;
+	char name[CUSTOMER_NAME_MAX_SIZE/sizeof(char)];
+	char id[CUSTOMER_ID_MAX_SIZE/sizeof(char)];
 };
 
 #endif //FLIGHTTICKET_SERVICE_CUSTOMER_H_
