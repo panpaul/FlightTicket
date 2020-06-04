@@ -168,18 +168,12 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 	flight.FlightId = 0;
 
 	auto f = QueryFlight(flight);
-	if (f == nullptr)
-	{ // definitely not happen
-		return false;
-	}
-
-	int nums = f[0].FlightId; // The first one's primary key refers to the total number
-
-	if (nums != 0) // existed
+	if (f.size() != 0) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
 		return false;
 	}
+
 	flight.FlightId = ++flightIdCnt;
 	flightVec.push_back(flight);
 
@@ -198,18 +192,12 @@ bool db::linearEngine::InsertCustomer(db::Customer customer)
 	customer.CustomerId = 0;
 
 	auto c = QueryCustomer(customer);
-	if (c == nullptr)
-	{ // definitely not happen
-		return false;
-	}
-
-	int nums = c[0].CustomerId; // The first one's primary key refers to the total number
-
-	if (nums != 0) // existed
+	if (c.size() != 0) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
 		return false;
 	}
+
 	customer.CustomerId = ++customerIdCnt;
 	customerVec.push_back(customer);
 
@@ -229,18 +217,12 @@ bool db::linearEngine::InsertOrder(db::Order order)
 	order.OrderId = 0;
 
 	auto o = QueryOrder(order);
-	if (o == nullptr)
-	{ // definitely not happen
-		return false;
-	}
-
-	int nums = o[0].OrderId; // The first one's primary key refers to the total number
-
-	if (nums != 0) // existed
+	if (o.size() != 0) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
 		return false;
 	}
+
 	order.OrderId = ++orderIdCnt;
 	orderVec.push_back(order);
 
@@ -253,35 +235,44 @@ bool db::linearEngine::InsertOrder(db::Order order)
  * @param flight the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Flight db::linearEngine::QueryFlight(struct Flight flight)
+std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 {
-	auto iter = flightVec.end();
 	if (flight.FlightId != 0)
 	{
-
+		auto filter = [flight](db::Flight f)
+		{
+		  return f.FlightId == flight.FlightId;
+		};
+		return findMatch(flightVec, filter);
 	}
 	else if (flight.FlightName[0] != '\0')
 	{
-
+		auto filter = [flight](db::Flight f)
+		{
+		  return strcmp(f.FlightName, flight.FlightName) == 0;
+		};
+		return findMatch(flightVec, filter);
 	}
 	else if (flight.Departure[0] != '\0')
 	{
-
+		auto filter = [flight](db::Flight f)
+		{
+		  return strcmp(f.Departure, flight.Departure) == 0;
+		};
+		return findMatch(flightVec, filter);
 	}
 	else if (flight.Destination[0] != '\0')
 	{
-
-	}
-
-	if (iter != flightVec.end())
-	{
-
+		auto filter = [flight](db::Flight f)
+		{
+		  return strcmp(f.Destination, flight.Destination) == 0;
+		};
+		return findMatch(flightVec, filter);
 	}
 	else
 	{
-		struct db::Flight empty[0];
-		empty[0].FlightId = 0;
-		return *empty;
+		std::vector<db::Flight> empty;
+		return empty;
 	}
 }
 
@@ -291,37 +282,37 @@ db::Flight db::linearEngine::QueryFlight(struct Flight flight)
  * @param customer the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Customer db::linearEngine::QueryCustomer(db::Customer customer)
+std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 {
-	auto iter = customerVec.end();
 	if (customer.CustomerId != 0)
 	{
-		iter = std::find_if(customerVec.begin(), customerVec.end(),
-			[customer](struct Customer customerCmp)
-			{ return customer.CustomerId == customerCmp.CustomerId; }
-		);
+		auto filter = [customer](db::Customer c)
+		{
+		  return c.CustomerId == customer.CustomerId;
+		};
+		return findMatch(customerVec, filter);
 	}
 	else if (customer.Name[0] != '\0')
 	{
-		iter = std::find_if(customerVec.begin(), customerVec.end(),
-			[customer](struct Customer customerCmp)
-			{ return !strcmp(customer.Name, customerCmp.Name); }
-		);
+		auto filter = [customer](db::Customer c)
+		{
+		  return strcmp(c.Name, customer.Name) == 0;
+		};
+		return findMatch(customerVec, filter);
 	}
 	else if (customer.Id[0] != '\0')
 	{
-		iter = std::find_if(customerVec.begin(), customerVec.end(),
-			[customer](struct Customer customerCmp)
-			{ return !strcmp(customer.Id, customerCmp.Id); }
-		);
-	}
-
-	if (iter != customerVec.end())
-	{
-		return *iter;
+		auto filter = [customer](db::Customer c)
+		{
+		  return strcmp(c.Id, customer.Id) == 0;
+		};
+		return findMatch(customerVec, filter);
 	}
 	else
-	{ return Customer{ 0, "", "" }; }
+	{
+		std::vector<db::Customer> empty;
+		return empty;
+	}
 }
 
 /**
@@ -330,37 +321,37 @@ db::Customer db::linearEngine::QueryCustomer(db::Customer customer)
  * @param order the query parameter
  * @return the desired data for success or "NULL" for error
  */
-db::Order db::linearEngine::QueryOrder(db::Order order)
+std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 {
-	auto iter = orderVec.end();
 	if (order.OrderId != 0)
 	{
-		iter = std::find_if(orderVec.begin(), orderVec.end(),
-			[order](struct Order orderCmp)
-			{ return order.OrderId == orderCmp.OrderId; }
-		);
+		auto filter = [order](db::Order o)
+		{
+		  return o.OrderId == order.OrderId;
+		};
+		return findMatch(orderVec, filter);
 	}
 	else if (order.CustomerId != 0)
 	{
-		iter = std::find_if(orderVec.begin(), orderVec.end(),
-			[order](struct Order orderCmp)
-			{ return order.CustomerId == orderCmp.CustomerId; }
-		);
+		auto filter = [order](db::Order o)
+		{
+		  return o.CustomerId == order.CustomerId;
+		};
+		return findMatch(orderVec, filter);
 	}
 	else if (order.FlightId != 0)
 	{
-		iter = std::find_if(orderVec.begin(), orderVec.end(),
-			[order](struct Order orderCmp)
-			{ return order.FlightId == orderCmp.FlightId; }
-		);
-	}
-
-	if (iter != orderVec.end())
-	{
-		return *iter;
+		auto filter = [order](db::Order o)
+		{
+		  return o.FlightId == order.FlightId;
+		};
+		return findMatch(orderVec, filter);
 	}
 	else
-	{ return Order{ 0, 0, 0, 0 }; }
+	{
+		std::vector<db::Order> empty;
+		return empty;
+	}
 }
 
 /**
@@ -491,8 +482,13 @@ bool db::linearEngine::UpdateOrder(db::Order order)
 }
 
 template<typename T, typename Cmp>
-T* db::linearEngine::findMatch(std::vector<T>& vec, Cmp cmp)
+std::vector<T> db::linearEngine::findMatch(std::vector<T>& vec, Cmp filter)
 {
-
-	return nullptr;
+	std::vector<T> ret;
+	auto result = vec | std::views::filter(filter);
+	for (auto i : result)
+	{
+		ret.push_back(i);
+	}
+	return ret;
 }

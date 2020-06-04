@@ -11,7 +11,6 @@
 #ifndef _LINEARENGINE_H_
 #define _LINEARENGINE_H_
 
-#include <string>
 #include <vector>
 #include "model.h"
 #include "base.h"
@@ -31,9 +30,9 @@ namespace db
 		bool InsertCustomer(struct Customer customer) override;
 		bool InsertOrder(struct Order order) override;
 
-		Flight QueryFlight(struct Flight flight) override;
-		struct Customer* QueryCustomer(struct Customer customer) override;
-		struct Order* QueryOrder(struct Order order) override;
+		std::vector<Flight> QueryFlight(struct Flight flight) override;
+		std::vector<Customer> QueryCustomer(struct Customer customer) override;
+		std::vector<Order> QueryOrder(struct Order order) override;
 
 		bool DeleteFlight(int flightId) override;
 		bool DeleteCustomer(int customerId) override;
@@ -57,7 +56,7 @@ namespace db
 		void loadOrderVec();
 
 		template<typename T, typename Cmp>
-		T* findMatch(std::vector<T>& vec, Cmp cmp);
+		std::vector<T> findMatch(std::vector<T>& vec, Cmp cmp);
 	};
 }
 #endif //_LINEARENGINE_H_

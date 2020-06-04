@@ -40,7 +40,6 @@ add_executable(debug
         model/definitions.h
         model/model.h
         model/base.cpp model/base.h
-        model/hashTable.cpp model/hashTable.h
         model/linearEngine.cpp model/linearEngine.h
         )
 

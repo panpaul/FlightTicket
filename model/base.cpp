@@ -8,6 +8,7 @@
  * @date 2020-5-22
  */
 
+#include <string>
 #include "base.h"
 
 bool db::base::InsertFlight(db::Flight flight)
@@ -25,17 +26,17 @@ bool db::base::InsertOrder(db::Order order)
 	return false;
 }
 
-db::Flight* db::base::QueryFlight(db::Flight flight)
+std::vector<db::Flight> db::base::QueryFlight(db::Flight flight)
 {
 	return {};
 }
 
-db::Customer* db::base::QueryCustomer(db::Customer customer)
+std::vector<db::Customer> db::base::QueryCustomer(db::Customer customer)
 {
 	return {};
 }
 
-db::Order* db::base::QueryOrder(db::Order order)
+std::vector<db::Order> db::base::QueryOrder(db::Order order)
 {
 	return {};
 }
