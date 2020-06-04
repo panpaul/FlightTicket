@@ -13,7 +13,7 @@
 
 #include <string>
 #include <vector>
-#include "struct.h"
+#include "model.h"
 #include "base.h"
 
 namespace db

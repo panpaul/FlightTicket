@@ -25,17 +25,17 @@ bool db::base::InsertOrder(db::Order order)
 	return false;
 }
 
-db::Flight db::base::QueryFlight(db::Flight flight)
+db::Flight* db::base::QueryFlight(db::Flight flight)
 {
 	return {};
 }
 
-db::Customer db::base::QueryCustomer(db::Customer customer)
+db::Customer* db::base::QueryCustomer(db::Customer customer)
 {
 	return {};
 }
 
-db::Order db::base::QueryOrder(db::Order order)
+db::Order* db::base::QueryOrder(db::Order order)
 {
 	return {};
 }

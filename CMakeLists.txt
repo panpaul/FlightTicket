@@ -31,5 +31,5 @@ add_executable(FlightTicket
         model/hashTable.cpp model/hashTable.h
         model/base.cpp model/base.h
         model/linearEngine.cpp model/linearEngine.h
-        model/struct.h
+        model/model.h
         service/service.h)

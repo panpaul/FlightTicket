@@ -12,7 +12,7 @@
 #define _BASE_H_
 
 #include <string>
-#include "struct.h"
+#include "model.h"
 
 namespace db
 {
@@ -26,9 +26,9 @@ namespace db
 		virtual bool InsertCustomer(struct Customer customer);
 		virtual bool InsertOrder(struct Order order);
 
-		virtual struct Flight QueryFlight(struct Flight flight);
-		virtual struct Customer QueryCustomer(struct Customer customer);
-		virtual struct Order QueryOrder(struct Order order);
+		virtual struct Flight* QueryFlight(struct Flight flight);
+		virtual struct Customer* QueryCustomer(struct Customer customer);
+		virtual struct Order* QueryOrder(struct Order order);
 
 		virtual bool DeleteFlight(int flightId);
 		virtual bool DeleteCustomer(int customerId);

@@ -8,8 +8,8 @@
  * @date 2020-5-22
  */
 
-#ifndef _STRUCT_H_
-#define _STRUCT_H_
+#ifndef _MODEL_H_
+#define _MODEL_H_
 
 #include "../definitions.h"
 
@@ -43,4 +43,4 @@ namespace db
 	};
 	const int ORDER_SIZE = sizeof(Order);
 }
-#endif //_STRUCT_H_
+#endif //_MODEL_H_
