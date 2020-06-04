@@ -190,6 +190,7 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 bool db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
+	customer.Name[0] = '\0';
 
 	auto c = QueryCustomer(customer);
 	if (c.size() != 0) // existed
@@ -243,7 +244,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 		{
 		  return f.FlightId == flight.FlightId;
 		};
-		return findMatch(flightVec, filter);
+		return FindMatch(flightVec, filter);
 	}
 	else if (flight.FlightName[0] != '\0')
 	{
@@ -251,7 +252,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 		{
 		  return strcmp(f.FlightName, flight.FlightName) == 0;
 		};
-		return findMatch(flightVec, filter);
+		return FindMatch(flightVec, filter);
 	}
 	else if (flight.Departure[0] != '\0')
 	{
@@ -259,7 +260,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 		{
 		  return strcmp(f.Departure, flight.Departure) == 0;
 		};
-		return findMatch(flightVec, filter);
+		return FindMatch(flightVec, filter);
 	}
 	else if (flight.Destination[0] != '\0')
 	{
@@ -267,7 +268,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 		{
 		  return strcmp(f.Destination, flight.Destination) == 0;
 		};
-		return findMatch(flightVec, filter);
+		return FindMatch(flightVec, filter);
 	}
 	else
 	{
@@ -290,7 +291,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 		{
 		  return c.CustomerId == customer.CustomerId;
 		};
-		return findMatch(customerVec, filter);
+		return FindMatch(customerVec, filter);
 	}
 	else if (customer.Name[0] != '\0')
 	{
@@ -298,7 +299,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 		{
 		  return strcmp(c.Name, customer.Name) == 0;
 		};
-		return findMatch(customerVec, filter);
+		return FindMatch(customerVec, filter);
 	}
 	else if (customer.Id[0] != '\0')
 	{
@@ -306,7 +307,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 		{
 		  return strcmp(c.Id, customer.Id) == 0;
 		};
-		return findMatch(customerVec, filter);
+		return FindMatch(customerVec, filter);
 	}
 	else
 	{
@@ -329,7 +330,7 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 		{
 		  return o.OrderId == order.OrderId;
 		};
-		return findMatch(orderVec, filter);
+		return FindMatch(orderVec, filter);
 	}
 	else if (order.CustomerId != 0)
 	{
@@ -337,7 +338,7 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 		{
 		  return o.CustomerId == order.CustomerId;
 		};
-		return findMatch(orderVec, filter);
+		return FindMatch(orderVec, filter);
 	}
 	else if (order.FlightId != 0)
 	{
@@ -345,7 +346,7 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 		{
 		  return o.FlightId == order.FlightId;
 		};
-		return findMatch(orderVec, filter);
+		return FindMatch(orderVec, filter);
 	}
 	else
 	{
@@ -491,7 +492,7 @@ bool db::linearEngine::UpdateOrder(db::Order order)
  * @version 0.0.1
  */
 template<typename T, typename Cmp>
-std::vector<T> db::linearEngine::findMatch(std::vector<T>& vec, Cmp filter)
+std::vector<T> db::linearEngine::FindMatch(std::vector<T>& vec, Cmp filter)
 {
 	std::vector<T> ret;
 	auto result = vec | std::views::filter(filter);

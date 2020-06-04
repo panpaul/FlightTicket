@@ -56,7 +56,7 @@ namespace db
 		void loadOrderVec();
 
 		template<typename T, typename Cmp>
-		std::vector<T> findMatch(std::vector<T>& vec, Cmp cmp);
+		std::vector<T> FindMatch(std::vector<T>& vec, Cmp cmp);
 	};
 }
 #endif //_LINEARENGINE_H_

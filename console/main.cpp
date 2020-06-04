@@ -22,7 +22,7 @@ void print()
 }
 
 void QueryFlight();
-void QueryCustomer(); // db not support
+void QueryCustomer();
 void Order();
 void RemoveOrder();
 void InsertFlight();
@@ -83,22 +83,6 @@ void QueryFlight()
 		cin >> dest;
 	}
 
-	auto f = new flight();
-	if (f->query(dest.c_str()))
-	{
-		cout << "查询到航班:" << endl;
-		cout << "\t航班号: " << f->FlightId << endl;
-		cout << "\t航班名: " << f->FlightName << endl;
-		cout << "\t出发站: " << f->Departure << endl;
-		cout << "\t终点站: " << f->Destination << endl;
-		cout << "\t最大容量: " << f->MaxCapacity << endl;
-		cout << "\t剩余座位: " << f->MaxCapacity - f->Current << endl;
-	}
-	else
-	{
-		cout << "未查询到相关信息" << endl;
-	}
-
 }
 
 void QueryCustomer()
@@ -142,32 +126,4 @@ void InsertFlight()
 
 void DeleteFlight()
 {
-}
-
-void test()
-{
-	auto le = new db::linearEngine(".");
-	le->InsertFlight(db::Flight{ 1, "hello", "dep1", "des1", 2, 1 });
-	le->InsertFlight(db::Flight{ 2, "world", "dep2", "des2", 2, 1 });
-	le->InsertFlight(db::Flight{ 3, "test", "dep3", "des3", 2, 1 });
-
-	//cout << le->queryFlight(db::Flight{ 0, "hello", "", "", 1, 2 }).FlightName << endl;
-	//cout << le->queryFlight(db::Flight{ 2, "", "", "", 1, 2 }).FlightName << endl;
-	//cout << le->queryFlight(db::Flight{ 0, "", "", "des3", 0, 0 }).FlightName << endl;
-
-	//cout << (le->queryFlight(db::Flight{}).FlightId == 0 ? "PASS" : "FAILED") << endl;
-	//cout << (le->queryFlight(db::Flight{ 0, "1" }).FlightId == 0 ? "PASS" : "FAILED") << endl;
-	//cout << (le->queryFlight(db::Flight{ 0, "", "1" }).FlightId == 0 ? "PASS" : "FAILED") << endl;
-
-	cout << le->DeleteFlight(1) << endl;
-	cout << (le->QueryFlight(db::Flight{ 1 }).FlightId == 0 ? "PASS" : "FAILED") << endl;
-
-	auto temp = le->QueryFlight(db::Flight{ 2 });
-	cout << temp.Current << endl;
-	temp.Current = 2;
-	le->UpdateFlight(temp);
-	temp = le->QueryFlight(db::Flight{ 2 });
-	cout << temp.Current << endl;
-
-	delete le;
 }

@@ -21,6 +21,7 @@ int main()
 	engine->InsertFlight(db::Flight{ 5, "name5", "dep2", "des5", 3, 1 });
 	engine->InsertFlight(db::Flight{ 6, "name6", "dep2", "des6", 3, 1 });
 	engine->InsertFlight(db::Flight{ 7, "name7", "dep2", "des7", 3, 1 });
+	engine->InsertFlight(db::Flight{ 8, "name8", "dep8", "des8", 3, 1 });
 
 	auto x = engine->QueryFlight(db::Flight{ 0, "", "dep2" });
 	for (auto i : x)
