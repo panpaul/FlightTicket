@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(FlightTicket)
-
 set(CMAKE_CXX_STANDARD 14)
-
 
 FIND_PACKAGE(Doxygen)
 OPTION(BUILD_DOCUMENTATION "Create the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
@@ -24,12 +21,24 @@ IF (BUILD_DOCUMENTATION)
             VERBATIM)
 ENDIF ()
 
+
+project(FlightTicket)
 add_executable(FlightTicket
-        main.cpp
-        definitions.h
-        service/customer.cpp service/customer.h service/flight.cpp service/flight.h
+        console/main.cpp
+        model/definitions.h
+        service/service.h service/customer.cpp service/customer.h service/flight.cpp service/flight.h
         model/hashTable.cpp model/hashTable.h
         model/base.cpp model/base.h
         model/linearEngine.cpp model/linearEngine.h
         model/model.h
-        service/service.h)
+        )
+
+project(debug)
+add_executable(debug
+        debug.cpp
+        model/definitions.h
+        model/model.h
+        model/base.cpp model/base.h
+        model/hashTable.cpp model/hashTable.h
+        model/linearEngine.cpp model/linearEngine.h
+        )

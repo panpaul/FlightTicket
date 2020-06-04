@@ -10,7 +10,11 @@
 #ifndef _DEFINITIONS_H_
 #define _DEFINITIONS_H_
 
-/// Max items can be stored
+/**
+ * @brief Data can be stored
+ * only used in hashtable
+ * @deprecated
+ */
 #define MAX_DATA 10000
 
 #define CUSTOMER_NAME_MAX_SIZE 20*sizeof(char)

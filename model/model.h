@@ -11,10 +11,10 @@
 #ifndef _MODEL_H_
 #define _MODEL_H_
 
-#include "../definitions.h"
-
 namespace db
 {
+#include "definitions.h"
+
 	struct Flight /// @brief the structure of flight info
 	{
 		int FlightId;

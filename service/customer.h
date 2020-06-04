@@ -6,7 +6,7 @@
 #define FLIGHTTICKET_SERVICE_CUSTOMER_H_
 
 #include "service.h"
-#include "../definitions.h"
+#include "../model/definitions.h"
 #include <cstring>
 #include <stdexcept>
 

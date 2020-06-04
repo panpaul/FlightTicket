@@ -31,9 +31,9 @@ namespace db
 		bool InsertCustomer(struct Customer customer) override;
 		bool InsertOrder(struct Order order) override;
 
-		struct Flight QueryFlight(struct Flight flight) override;
-		struct Customer QueryCustomer(struct Customer customer) override;
-		struct Order QueryOrder(struct Order order) override;
+		struct Flight* QueryFlight(struct Flight flight) override;
+		struct Customer* QueryCustomer(struct Customer customer) override;
+		struct Order* QueryOrder(struct Order order) override;
 
 		bool DeleteFlight(int flightId) override;
 		bool DeleteCustomer(int customerId) override;

@@ -5,7 +5,7 @@
 #ifndef FLIGHTTICKET_SERVICE_FLIGHT_H_
 #define FLIGHTTICKET_SERVICE_FLIGHT_H_
 
-#include "../definitions.h"
+#include "../model/definitions.h"
 #include "service.h"
 
 class flight

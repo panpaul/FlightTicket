@@ -4,7 +4,7 @@
  * @details file I/O, basic query with O(n). Notice: All field is unique
  * @author Paul
  * @email panyuxuan@hotmail.com
- * @version 0.0.1
+ * @version 0.0.2
  * @date 2020-5-22
  */
 
@@ -165,7 +165,7 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
 	auto f = QueryFlight(flight);
-	if (f.FlightId != 0) // existed
+	if (f->FlightId != 0) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
 		return false;
