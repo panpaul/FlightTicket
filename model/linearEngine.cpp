@@ -233,7 +233,7 @@ bool db::linearEngine::InsertOrder(db::Order order)
  * @brief query a flight info
  * @details it will match the first none "NULL" field
  * @param flight the query parameter
- * @return the desired data for success or "NULL" for error
+ * @return the desired data
  */
 std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 {
@@ -280,7 +280,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
  * @brief query a customer info
  * @details it will match the first none "NULL" field
  * @param customer the query parameter
- * @return the desired data for success or "NULL" for error
+ * @return the desired data
  */
 std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 {
@@ -319,7 +319,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
  * @brief query an order info
  * @details it will match the first none "NULL" field
  * @param order the query parameter
- * @return the desired data for success or "NULL" for error
+ * @return the desired data
  */
 std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 {
@@ -481,6 +481,15 @@ bool db::linearEngine::UpdateOrder(db::Order order)
 	return false;
 }
 
+/**
+ * @brief find all data matching the filter
+ * @tparam T type of the data
+ * @tparam Cmp the lambda function
+ * @param vec domain of the data
+ * @param filter condition to match
+ * @return a vector storing the data
+ * @version 0.0.1
+ */
 template<typename T, typename Cmp>
 std::vector<T> db::linearEngine::findMatch(std::vector<T>& vec, Cmp filter)
 {
