@@ -10,7 +10,9 @@
 
 #ifndef _DATABASE_H_
 #define _DATABASE_H_
+
 #include <string>
+#include "struct.h"
 
 namespace db
 {
@@ -19,12 +21,22 @@ namespace db
 	 */
 	class database
 	{
-	 public:
-		explicit database(const std::string& path);
-		~database();
-	 private:
-		std::string basePath;
+	 protected:
+		virtual bool InsertFlight(struct Flight flight);
+		virtual bool InsertCustomer(struct Customer customer);
+		virtual bool InsertOrder(struct Order order);
 
+		virtual struct Flight QueryFlight(struct Flight flight);
+		virtual struct Customer QueryCustomer(struct Customer customer);
+		virtual struct Order QueryOrder(struct Order order);
+
+		virtual bool DeleteFlight(int flightId);
+		virtual bool DeleteCustomer(int customerId);
+		virtual bool DeleteOrder(int orderId);
+
+		virtual bool UpdateFlight(struct Flight flight);
+		virtual bool UpdateCustomer(struct Customer customer);
+		virtual bool UpdateOrder(struct Order order);
 	};
 }
 #endif //_DATABASE_H_

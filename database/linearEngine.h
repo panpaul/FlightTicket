@@ -14,33 +14,34 @@
 #include <string>
 #include <vector>
 #include "struct.h"
+#include "database.h"
 
 namespace db
 {
 	/**
 	 * @brief the basic storage engine used in database
 	 */
-	class linearEngine
+	class linearEngine : database
 	{
 	 public:
 		explicit linearEngine(const std::string& path);
 		~linearEngine();
 
-		bool InsertFlight(struct Flight flight);
-		bool InsertCustomer(struct Customer customer);
-		bool InsertOrder(struct Order order);
+		bool InsertFlight(struct Flight flight) override;
+		bool InsertCustomer(struct Customer customer) override;
+		bool InsertOrder(struct Order order) override;
 
-		struct Flight QueryFlight(struct Flight flight);
-		struct Customer QueryCustomer(struct Customer customer);
-		struct Order QueryOrder(struct Order order);
+		struct Flight QueryFlight(struct Flight flight) override;
+		struct Customer QueryCustomer(struct Customer customer) override;
+		struct Order QueryOrder(struct Order order) override;
 
-		bool DeleteFlight(int flightId);
-		bool DeleteCustomer(int customerId);
-		bool DeleteOrder(int orderId);
+		bool DeleteFlight(int flightId) override;
+		bool DeleteCustomer(int customerId) override;
+		bool DeleteOrder(int orderId) override;
 
-		bool UpdateFlight(struct Flight flight);
-		bool UpdateCustomer(struct Customer customer);
-		bool UpdateOrder(struct Order order);
+		bool UpdateFlight(struct Flight flight) override;
+		bool UpdateCustomer(struct Customer customer) override;
+		bool UpdateOrder(struct Order order) override;
 
 	 private:
 		std::string basePath;
