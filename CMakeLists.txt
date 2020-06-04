@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 FIND_PACKAGE(Doxygen)
 OPTION(BUILD_DOCUMENTATION "Create the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
@@ -41,4 +42,11 @@ add_executable(debug
         model/base.cpp model/base.h
         model/hashTable.cpp model/hashTable.h
         model/linearEngine.cpp model/linearEngine.h
+        )
+
+project(instant)
+add_executable(instant
+        debug.cpp
+        model/model.h
+        model/definitions.h
         )

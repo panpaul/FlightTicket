@@ -31,7 +31,7 @@ namespace db
 		bool InsertCustomer(struct Customer customer) override;
 		bool InsertOrder(struct Order order) override;
 
-		struct Flight* QueryFlight(struct Flight flight) override;
+		Flight QueryFlight(struct Flight flight) override;
 		struct Customer* QueryCustomer(struct Customer customer) override;
 		struct Order* QueryOrder(struct Order order) override;
 
@@ -55,6 +55,9 @@ namespace db
 		void loadFlightVec();
 		void loadCustomerVec();
 		void loadOrderVec();
+
+		template<typename T, typename Cmp>
+		T* findMatch(std::vector<T>& vec, Cmp cmp);
 	};
 }
 #endif //_LINEARENGINE_H_

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
+#include <ranges>
 #include "linearEngine.h"
 
 db::linearEngine::linearEngine(const std::string& path)
@@ -160,12 +161,21 @@ void db::linearEngine::loadOrderVec()
  * @details the field flightId will be auto computed and no duplicate data will be inserted
  * @param flight the struct of flight to be inserted
  * @return true for success and false for error
+ * @version 0.0.2
  */
 bool db::linearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
+
 	auto f = QueryFlight(flight);
-	if (f->FlightId != 0) // existed
+	if (f == nullptr)
+	{ // definitely not happen
+		return false;
+	}
+
+	int nums = f[0].FlightId; // The first one's primary key refers to the total number
+
+	if (nums != 0) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
 		return false;
@@ -181,12 +191,21 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
  * @details the field customerId will be auto computed and no duplicate data will be inserted
  * @param customer the struct of customer to be inserted
  * @return true for success and false for error
+ * @version 0.0.2
  */
 bool db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
+
 	auto c = QueryCustomer(customer);
-	if (c.CustomerId != 0) // existed
+	if (c == nullptr)
+	{ // definitely not happen
+		return false;
+	}
+
+	int nums = c[0].CustomerId; // The first one's primary key refers to the total number
+
+	if (nums != 0) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
 		return false;
@@ -203,12 +222,21 @@ bool db::linearEngine::InsertCustomer(db::Customer customer)
  * the field orderId will be auto computed and no duplicate data will be inserted
  * @param order the struct of order to be inserted
  * @return true for success and false for error
+ * @version 0.0.2
  */
 bool db::linearEngine::InsertOrder(db::Order order)
 {
 	order.OrderId = 0;
+
 	auto o = QueryOrder(order);
-	if (o.OrderId != 0) // existed
+	if (o == nullptr)
+	{ // definitely not happen
+		return false;
+	}
+
+	int nums = o[0].OrderId; // The first one's primary key refers to the total number
+
+	if (nums != 0) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
 		return false;
@@ -230,39 +258,31 @@ db::Flight db::linearEngine::QueryFlight(struct Flight flight)
 	auto iter = flightVec.end();
 	if (flight.FlightId != 0)
 	{
-		iter = std::find_if(flightVec.begin(), flightVec.end(),
-			[flight](struct Flight flightCmp)
-			{ return flight.FlightId == flightCmp.FlightId; }
-		);
+
 	}
 	else if (flight.FlightName[0] != '\0')
 	{
-		iter = std::find_if(flightVec.begin(), flightVec.end(),
-			[flight](struct Flight flightCmp)
-			{ return !strcmp(flight.FlightName, flightCmp.FlightName); }
-		);
+
 	}
 	else if (flight.Departure[0] != '\0')
 	{
-		iter = std::find_if(flightVec.begin(), flightVec.end(),
-			[flight](struct Flight flightCmp)
-			{ return !strcmp(flight.Departure, flightCmp.Departure); }
-		);
+
 	}
 	else if (flight.Destination[0] != '\0')
 	{
-		iter = std::find_if(flightVec.begin(), flightVec.end(),
-			[flight](struct Flight flightCmp)
-			{ return !strcmp(flight.Destination, flightCmp.Destination); }
-		);
+
 	}
 
 	if (iter != flightVec.end())
 	{
-		return *iter;
+
 	}
 	else
-	{ return Flight{ 0, "", "", "", 0, 0 }; }
+	{
+		struct db::Flight empty[0];
+		empty[0].FlightId = 0;
+		return *empty;
+	}
 }
 
 /**
@@ -347,6 +367,7 @@ db::Order db::linearEngine::QueryOrder(db::Order order)
  * @brief delete a flight info from memory
  * @param flightId the flight info to be deleted
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::DeleteFlight(int flightId)
 {
@@ -365,6 +386,7 @@ bool db::linearEngine::DeleteFlight(int flightId)
  * @brief delete a customer info from memory
  * @param customerId the flight info to be deleted
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::DeleteCustomer(int customerId)
 {
@@ -383,6 +405,7 @@ bool db::linearEngine::DeleteCustomer(int customerId)
  * @brief delete an order info from memory
  * @param orderId the flight info to be deleted
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::DeleteOrder(int orderId)
 {
@@ -402,6 +425,7 @@ bool db::linearEngine::DeleteOrder(int orderId)
  * @details FlightId must not be zero
  * @param flight update info
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::UpdateFlight(db::Flight flight)
 {
@@ -426,6 +450,7 @@ bool db::linearEngine::UpdateFlight(db::Flight flight)
  * @details CustomerId must not be zero
  * @param customer update info
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::UpdateCustomer(db::Customer customer)
 {
@@ -447,6 +472,7 @@ bool db::linearEngine::UpdateCustomer(db::Customer customer)
  * @details OrderId must not be zero
  * @param order update info
  * @return true for success and false for error
+ * @version 0.0.1
  */
 bool db::linearEngine::UpdateOrder(db::Order order)
 {
@@ -462,4 +488,11 @@ bool db::linearEngine::UpdateOrder(db::Order order)
 		}
 	}
 	return false;
+}
+
+template<typename T, typename Cmp>
+T* db::linearEngine::findMatch(std::vector<T>& vec, Cmp cmp)
+{
+
+	return nullptr;
 }
