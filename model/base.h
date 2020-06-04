@@ -1,6 +1,6 @@
 /**
- * @file database.h
- * @brief interface the database
+ * @file base.h
+ * @brief interface the model
  * @details the integration of linearEngine and BTree
  * @author Paul
  * @email panyuxuan@hotmail.com
@@ -8,8 +8,8 @@
  * @date 2020-5-22
  */
 
-#ifndef _DATABASE_H_
-#define _DATABASE_H_
+#ifndef _BASE_H_
+#define _BASE_H_
 
 #include <string>
 #include "struct.h"
@@ -17,9 +17,9 @@
 namespace db
 {
 	/**
-	 * @brief interface the database
+	 * @brief interface the model
 	 */
-	class database
+	class base
 	{
 	 protected:
 		virtual bool InsertFlight(struct Flight flight);
@@ -39,4 +39,4 @@ namespace db
 		virtual bool UpdateOrder(struct Order order);
 	};
 }
-#endif //_DATABASE_H_
+#endif //_BASE_H_

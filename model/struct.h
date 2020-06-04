@@ -1,6 +1,6 @@
 /**
  * @file struct.h
- * @brief definitions of the structures used in database
+ * @brief definitions of the structures used in model
  * @details includes the structures of flight, customer, order
  * @author Paul
  * @email panyuxuan@hotmail.com
@@ -17,7 +17,6 @@ namespace db
 {
 	struct Flight /// @brief the structure of flight info
 	{
-		// TODO flight time
 		int FlightId;
 		char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)];
 		char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)];
@@ -32,8 +31,6 @@ namespace db
 		int CustomerId;
 		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)];
 		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; ///< passport id / ID card number
-		int FlightId;
-		int SeatId;
 	};
 	const int CUSTOMER_SIZE = sizeof(Customer);
 

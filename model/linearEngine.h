@@ -1,6 +1,6 @@
 /**
  * @file linearEngine.h
- * @brief the basic storage engine used in database
+ * @brief the basic storage engine used in model
  * @details file I/O, basic query with O(n)
  * @author Paul
  * @email panyuxuan@hotmail.com
@@ -14,14 +14,14 @@
 #include <string>
 #include <vector>
 #include "struct.h"
-#include "database.h"
+#include "base.h"
 
 namespace db
 {
 	/**
-	 * @brief the basic storage engine used in database
+	 * @brief the basic storage engine used in model
 	 */
-	class linearEngine : database
+	class linearEngine : base
 	{
 	 public:
 		explicit linearEngine(const std::string& path);

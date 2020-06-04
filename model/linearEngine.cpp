@@ -1,6 +1,6 @@
 /**
  * @file linearEngine.cpp
- * @brief the basic storage engine used in database
+ * @brief the basic storage engine used in model
  * @details file I/O, basic query with O(n). Notice: All field is unique
  * @author Paul
  * @email panyuxuan@hotmail.com

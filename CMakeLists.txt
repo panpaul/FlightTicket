@@ -28,8 +28,8 @@ add_executable(FlightTicket
         main.cpp
         definitions.h
         service/customer.cpp service/customer.h service/flight.cpp service/flight.h
-        database/hashTable.cpp database/hashTable.h
-        database/database.cpp database/database.h
-        database/linearEngine.cpp database/linearEngine.h
-        database/struct.h
+        model/hashTable.cpp model/hashTable.h
+        model/base.cpp model/base.h
+        model/linearEngine.cpp model/linearEngine.h
+        model/struct.h
         service/service.h)
