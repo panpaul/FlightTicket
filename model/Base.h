@@ -4,7 +4,7 @@
  * @details the integration of linearEngine and BTree
  * @author Paul
  * @email panyuxuan@hotmail.com
- * @version 0.0.1
+ * @version 0.0.2
  * @date 2020-5-22
  */
 
@@ -19,7 +19,7 @@ namespace db
 	/**
 	 * @brief interface the model
 	 */
-	class base
+	class Base
 	{
 	 protected:
 		virtual bool InsertFlight(struct Flight flight);

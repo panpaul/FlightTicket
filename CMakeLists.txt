@@ -17,7 +17,7 @@ IF (BUILD_DOCUMENTATION)
 
     ADD_CUSTOM_TARGET(doc
             COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Generating API documentation with Doxygen"
             VERBATIM)
 ENDIF ()
@@ -27,9 +27,8 @@ project(FlightTicket)
 add_executable(FlightTicket
         console/main.cpp
         model/definitions.h
-        service/service.h service/customer.cpp service/customer.h service/flight.cpp service/flight.h
-        model/hashTable.cpp model/hashTable.h
-        model/base.cpp model/base.h
+        service/customer.cpp service/customer.h service/flight.cpp service/flight.h
+        model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         model/model.h
         )
@@ -39,7 +38,7 @@ add_executable(debug
         debug.cpp
         model/definitions.h
         model/model.h
-        model/base.cpp model/base.h
+        model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         )
 
