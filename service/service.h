@@ -6,7 +6,8 @@
 #define _SERVICE_H_
 
 #include "../model/linearEngine.h"
-
-static auto engine = new db::linearEngine(".");
+#include <string>
+std::string str = ".";
+static auto engine = new db::linearEngine(str);
 
 #endif //_SERVICE_H_
