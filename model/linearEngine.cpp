@@ -10,7 +10,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 #include <cstring>
 #include "linearEngine.h"
 
@@ -440,6 +439,7 @@ bool db::linearEngine::UpdateFlight(db::Flight flight)
 			memcpy(i.Destination, flight.Destination, FLIGHT_DESTINATION_MAX_SIZE);
 			i.MaxCapacity = flight.MaxCapacity;
 			i.Current = flight.Current;
+			i.Time = flight.Time;
 			return true;
 		}
 	}
