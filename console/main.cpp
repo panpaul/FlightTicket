@@ -2,7 +2,7 @@
 // Created by panyuxuan on 2020/5/7.
 //
 
-#include "../service/customer.h"
+#include "../service/Customer.h"
 #include "../service/flight.h"
 #include <iostream>
 
