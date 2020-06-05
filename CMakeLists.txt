@@ -27,7 +27,7 @@ project(FlightTicket)
 add_executable(FlightTicket
         console/main.cpp
         model/definitions.h
-        service/customer.cpp service/customer.h service/flight.cpp service/flight.h
+        service/Customer.cpp service/Customer.h service/flight.cpp service/flight.h
         model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         model/model.h
