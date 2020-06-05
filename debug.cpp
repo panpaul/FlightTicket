@@ -1,10 +1,7 @@
-#include <ranges>
 #include <iostream>
-#include <vector>
 #include <cstring>
 
 #include "model/linearEngine.h"
-#include "model/model.h"
 
 using namespace std;
 

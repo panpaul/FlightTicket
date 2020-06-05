@@ -17,29 +17,30 @@ namespace db
 
 	struct Flight /// @brief the structure of flight info
 	{
-		int FlightId;
-		char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)];
-		char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)];
-		char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)];
+		int FlightId; ///< unique index marking the id
+		char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)]; ///< the name of the flight(unique)
+		char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)]; ///< the name of the departure
+		char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)]; ///< the name of the destination
 		int MaxCapacity; ///< max passengers num
 		int Current; ///< current ordered passengers num
+		time_t Time; ///< when to fly
 	};
 	const int FLIGHT_SIZE = sizeof(Flight);
 
 	struct Customer /// @brief the structure of customer info
 	{
-		int CustomerId;
-		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)];
-		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; ///< passport id / ID card number
+		int CustomerId; ///< unique index marking the id
+		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]; ///< customer's name
+		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]; ///< passport id / ID card number(unique)
 	};
 	const int CUSTOMER_SIZE = sizeof(Customer);
 
 	struct Order /// @brief the structure of order info
 	{
-		int OrderId;
-		int CustomerId;
-		int FlightId;
-		int SeatId;
+		int OrderId; ///< unique index marking the id
+		int CustomerId; ///< customer's index
+		int FlightId; ///< flight's index
+		int SeatId; ///< seat id
 	};
 	const int ORDER_SIZE = sizeof(Order);
 }

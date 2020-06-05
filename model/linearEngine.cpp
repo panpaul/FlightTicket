@@ -96,7 +96,8 @@ void db::linearEngine::LoadFlightVec()
 		memcpy(&flight.MaxCapacity, data + cnt, sizeof(int));
 		cnt += sizeof(int);
 		memcpy(&flight.Current, data + cnt, sizeof(int));
-
+		cnt += sizeof(int);
+		memcpy(&flight.Time, data + cnt, sizeof(time_t));
 		FlightVec.push_back(flight);
 	}
 
@@ -156,7 +157,6 @@ void db::linearEngine::LoadOrderVec()
 		memcpy(&order.FlightId, data + cnt, sizeof(int));
 		cnt += sizeof(int);
 		memcpy(&order.SeatId, data + cnt, sizeof(int));
-
 		OrderVec.push_back(order);
 	}
 
