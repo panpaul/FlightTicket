@@ -37,6 +37,7 @@ int main(int argc, char* argv[])
 		unsigned choices;
 		print();
 		cin >> choices;
+		cout << endl;
 		if (choices == 0)break;
 		if (choices > 6)
 		{
@@ -75,55 +76,203 @@ int main(int argc, char* argv[])
 void QueryFlight()
 {
 	string dest;
-	cout << "请输入终点站: " << endl;
+	cout << "请输入终点站: ";
 	cin >> dest;
-	while (dest.length() >= FLIGHT_DESTINATION_MAX_SIZE)
+	cout << endl;
+	while (dest.length() >= FLIGHT_DESTINATION_MAX_SIZE/sizeof(char))
 	{
-		cout << "终点站长度过长，请重试: " << endl;
+		cout << "终点站长度过长，请重试: ";
 		cin >> dest;
+		cout<< endl;
 	}
-
+	char* destination;
+	strcpy(destination,dest.c_str());
+	flight flig;
+	flig.QueryFlightbyDestination(destination);
 }
 
 void QueryCustomer()
 {
+	string name, id;
 
+	cout << "请输入姓名: ";
+	cin >> name;
+	cout << endl;
+	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
+	{
+		cout << "姓名长度过长，请重试: ";
+		cin >> name;
+		cout << endl;
+	}
+
+	cout << "请输入证件号: ";
+	cin >> id;
+	cout << endl;
+	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
+	{
+		cout << "证件长度过长，请重试: ";
+		cin >> id;
+		cout << endl;
+	}
+
+	char* Name ;
+	strcpy(Name,name.c_str());
+	char* Id ;
+	strcpy(Id,id.c_str());
+	customer cust(Name,Id);
+	cust.QueryCustomer();
 }
 
 void Order()
 {
-	string name, id;
-	int flight;
+	string name, id , flightname;
 
-	cout << "请输入姓名: " << endl;
+	cout << "请输入姓名: ";
 	cin >> name;
-	while (name.length() >= CUSTOMER_NAME_MAX_SIZE)
+	cout << endl;
+	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
 	{
-		cout << "姓名长度过长，请重试: " << endl;
+		cout << "姓名长度过长，请重试: ";
 		cin >> name;
+		cout << endl;
 	}
 
-	cout << "请输入证件号: " << endl;
+	cout << "请输入证件号: ";
 	cin >> id;
-	while (id.length() >= CUSTOMER_ID_MAX_SIZE)
+	cout << endl;
+	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
 	{
-		cout << "证件长度过长，请重试: " << endl;
+		cout << "证件长度过长，请重试: ";
 		cin >> id;
+		cout << endl;
 	}
 
-	cout << "请输入航班号: " << endl;
-	cin >> flight;
+	cout << "请输入航班号: ";
+	cin>>flightname;
+	cout << endl;
+	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
+		cout << "航班号过长，请重试: ";
+		cin >> flightname;
+		cout << endl;
+	}
 
+
+	char* Name ;
+	strcpy(Name,name.c_str());
+	char* Id ;
+	strcpy(Id,id.c_str());
+	char* Flightname;
+	strcpy(Flightname,flightname.c_str());
+	customer cust(Name,Id);
+	cust.MakeOrder(Flightname);
 }
 
 void RemoveOrder()
 {
+	string name, id , flightname;
+
+	cout << "请输入姓名: ";
+	cin >> name;
+	cout << endl;
+	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
+	{
+		cout << "姓名长度过长，请重试: ";
+		cin >> name;
+		cout << endl;
+	}
+
+	cout << "请输入证件号: ";
+	cin >> id;
+	cout << endl;
+	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
+	{
+		cout << "证件长度过长，请重试: ";
+		cin >> id;
+		cout << endl;
+	}
+
+	cout << "请输入航班号: ";
+	cin>>flightname;
+	cout << endl;
+	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
+		cout << "航班号过长，请重试: ";
+		cin >> flightname;
+		cout << endl;
+	}
+
+
+	char* Name ;
+	strcpy(Name,name.c_str());
+	char* Id ;
+	strcpy(Id,id.c_str());
+	char* Flightname;
+	strcpy(Flightname,flightname.c_str());
+	customer cust(Name,Id);
+	cust.DeleteOrder(Flightname);
+
+
 }
 
 void InsertFlight()
 {
+	string flightname,departure,destination;
+	int maxcapacity;
+
+	cout << "请输入航班号: ";
+	cin>>flightname;
+	cout<<endl;
+	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
+		cout << "航班号过长，请重试: ";
+		cin >> flightname;
+		cout<<endl;
+	}
+
+
+	cout << "请输入始发站: ";
+	cin >> departure;
+	cout<<endl;
+	while (departure.length() >= FLIGHT_DEPARTURE_MAX_SIZE/sizeof(char))
+	{
+		cout << "始发站长度过长，请重试: ";
+		cin >> departure;
+		cout<<endl;
+	}
+
+	cout << "请输入终点站号: ";
+	cin >> destination;
+	cout<<endl;
+	while (destination.length() >= FLIGHT_DESTINATION_MAX_SIZE/sizeof(char))
+	{
+		cout << "终点站长度过长，请重试: ";
+		cin >> destination;
+		cout<<endl;
+	}
+
+	cout<<"输入最大座位数：";
+	cin>>maxcapacity;
+	cout<<endl;
+
+	char* Flightname;
+	strcpy(Flightname,flightname.c_str());
+	char* Departure ;
+	strcpy(Departure, departure.c_str());
+	char* Destination ;
+	strcpy(Destination, destination.c_str());
+	flight flig(Flightname,Departure,Destination,maxcapacity);
 }
 
 void DeleteFlight()
 {
+	string flightname;
+	cout << "请输入航班号: " << endl;
+	cin>>flightname;
+	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
+		cout << "航班号过长，请重试: " << endl;
+		cin >> flightname;
+	}
+	char* Flightname;
+	strcpy(Flightname, flightname.c_str());
+
+	flight flig(Flightname);
+	flig.DeleteFlight();
 }

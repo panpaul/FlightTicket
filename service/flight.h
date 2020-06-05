@@ -4,17 +4,18 @@
 #include"../model/linearEngine.h"
 #include"service.h"
 #include<cstring>
+#include<iostream>
 #include"../model/definitions.h"
 class flight
 {
  public:
 	flight();
-	flight(char* flightname);
-	flight(char* flightname,char* departure,char* destination);
+	flight(char *flightname);
+	flight(char* flightname,char* departure,char* destination,int maxcapacity);
 	~flight();
 	void InsertFlight();
 	void QueryFlightbyDestination(char *destination);
-	void QuertFlightbyFlightname(char *flightname);
+	void QueryFlightbyFlightname(char *flightname);
 	void DeleteFlight();
 
  private:
