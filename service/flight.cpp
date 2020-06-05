@@ -2,7 +2,7 @@
 flight::flight() = default;
 flight::flight(char *flightname){
 	int namelength = strlen(flightname);
-	if(namelength <= FLIGHT_NAME_MAX_SIZE/sizeof(char){
+	if(namelength <= FLIGHT_NAME_MAX_SIZE/sizeof(char)){
 		strcpy(this->flightname,flightname);
 	}
 	else {
