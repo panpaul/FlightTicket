@@ -19,7 +19,7 @@ namespace db
 	/**
 	 * @brief interface the model
 	 */
-	class base
+	class Base
 	{
 	 protected:
 		virtual bool InsertFlight(struct Flight flight);

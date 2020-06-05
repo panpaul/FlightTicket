@@ -13,14 +13,14 @@
 
 #include <vector>
 #include "model.h"
-#include "base.h"
+#include "Base.h"
 
 namespace db
 {
 	/**
 	 * @brief the basic storage engine used in model
 	 */
-	class linearEngine : base
+	class linearEngine : Base
 	{
 	 public:
 		explicit linearEngine(const std::string& path);
@@ -43,17 +43,17 @@ namespace db
 		bool UpdateOrder(struct Order order) override;
 
 	 private:
-		std::string basePath;
-		std::vector<Flight> flightVec;
-		std::vector<Customer> customerVec;
-		std::vector<Order> orderVec;
-		int flightIdCnt = 0, customerIdCnt = 0, orderIdCnt = 0;
+		std::string BasePath;
+		std::vector<Flight> FlightVec;
+		std::vector<Customer> CustomerVec;
+		std::vector<Order> OrderVec;
+		int FlightIdCnt = 0, CustomerIdCnt = 0, OrderIdCnt = 0;
 
 		template<typename T>
-		void saveVec(std::vector<T>& vec, int cnt, int size, const std::string& file);
-		void loadFlightVec();
-		void loadCustomerVec();
-		void loadOrderVec();
+		void SaveVec(std::vector<T>& vec, int cnt, int size, const std::string& file);
+		void LoadFlightVec();
+		void LoadCustomerVec();
+		void LoadOrderVec();
 
 		template<typename T, typename Cmp>
 		std::vector<T> FindMatch(std::vector<T>& vec, Cmp cmp);

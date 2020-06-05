@@ -29,4 +29,6 @@ int main()
 		cout << i.Destination << endl;
 	}
 
+	delete engine;
+
 }

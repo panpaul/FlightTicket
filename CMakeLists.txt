@@ -28,8 +28,7 @@ add_executable(FlightTicket
         console/main.cpp
         model/definitions.h
         service/customer.cpp service/customer.h service/flight.cpp service/flight.h
-        model/hashTable.cpp model/hashTable.h
-        model/base.cpp model/base.h
+        model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         model/model.h
         )
@@ -39,7 +38,7 @@ add_executable(debug
         debug.cpp
         model/definitions.h
         model/model.h
-        model/base.cpp model/base.h
+        model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         )
 
