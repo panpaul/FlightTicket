@@ -1,6 +1,3 @@
-//
-// Created by panyuxuan on 2020/6/4.
-//
 #include <ranges>
 #include <iostream>
 #include <vector>

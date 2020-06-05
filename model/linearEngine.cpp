@@ -168,7 +168,7 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 	flight.FlightId = 0;
 
 	auto f = QueryFlight(flight);
-	if (f.size() != 0) // existed
+	if (!f.empty()) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
 		return false;
@@ -190,15 +190,17 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 bool db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
+	char backup = customer.Name[0];
 	customer.Name[0] = '\0';
 
 	auto c = QueryCustomer(customer);
-	if (c.size() != 0) // existed
+	if (!c.empty()) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
 		return false;
 	}
 
+	customer.Name[0] = backup;
 	customer.CustomerId = ++CustomerIdCnt;
 	CustomerVec.push_back(customer);
 
@@ -218,7 +220,7 @@ bool db::linearEngine::InsertOrder(db::Order order)
 	order.OrderId = 0;
 
 	auto o = QueryOrder(order);
-	if (o.size() != 0) // existed
+	if (!o.empty()) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
 		return false;
