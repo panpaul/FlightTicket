@@ -22,8 +22,8 @@ IF (BUILD_DOCUMENTATION)
             VERBATIM)
 ENDIF ()
 
-
 project(FlightTicket)
+
 add_executable(FlightTicket
         console/main.cpp
         model/definitions.h
@@ -33,6 +33,16 @@ add_executable(FlightTicket
         model/model.h
         )
 
+IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" GREATER_EQUAL "10")
+    MESSAGE("Using ranges library provided by GNU")
+ELSE ()
+    MESSAGE("Using fallback support for ranges library")
+    ADD_DEFINITIONS(-DUSING_FALLBACK_SUPPORT)
+    find_package(range-v3 CONFIG REQUIRED)
+    target_link_libraries(FlightTicket PRIVATE range-v3 range-v3-meta range-v3::meta range-v3-concepts)
+ENDIF ()
+
+
 project(debug)
 add_executable(debug
         debug.cpp
@@ -41,10 +51,11 @@ add_executable(debug
         model/Base.cpp model/Base.h
         model/linearEngine.cpp model/linearEngine.h
         )
-
-project(instant)
-add_executable(instant
-        debug.cpp
-        model/model.h
-        model/definitions.h
-        )
+IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" GREATER_EQUAL "10")
+    MESSAGE("Using ranges library provided by GNU")
+ELSE ()
+    MESSAGE("Using fallback support for ranges library")
+    ADD_DEFINITIONS(-DUSING_FALLBACK_SUPPORT)
+    find_package(range-v3 CONFIG REQUIRED)
+    target_link_libraries(debug PRIVATE range-v3 range-v3-meta range-v3::meta range-v3-concepts)
+ENDIF ()

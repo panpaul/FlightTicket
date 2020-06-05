@@ -12,8 +12,15 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
-#include <ranges>
 #include "linearEngine.h"
+
+#ifdef USING_FALLBACK_SUPPORT
+#include <range/v3/all.hpp>
+
+#else
+#include <ranges>
+
+#endif
 
 db::linearEngine::linearEngine(const std::string& path)
 {
@@ -497,7 +504,13 @@ template<typename T, typename Cmp>
 std::vector<T> db::linearEngine::FindMatch(std::vector<T>& vec, Cmp filter)
 {
 	std::vector<T> ret;
+
+#ifdef USING_FALLBACK_SUPPORT
+	auto result = vec | ranges::views::filter(filter);
+#else
 	auto result = vec | std::views::filter(filter);
+#endif
+
 	for (auto i : result)
 	{
 		ret.push_back(i);
