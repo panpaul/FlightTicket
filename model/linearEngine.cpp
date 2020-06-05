@@ -327,7 +327,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 
 /**
  * @brief query an order info
- * @details it will match the first none "NULL" field
+ * @details it will match CustomerId and FlightId together
  * @param order the query parameter
  * @return the desired data
  */
@@ -341,27 +341,27 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 		};
 		return FindMatch(OrderVec, filter);
 	}
-	else if (order.CustomerId != 0)
+
+	std::vector<db::Order> vec = OrderVec;
+	if (order.CustomerId != 0)
 	{
 		auto filter = [order](db::Order o)
 		{
 		  return o.CustomerId == order.CustomerId;
 		};
-		return FindMatch(OrderVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else if (order.FlightId != 0)
+
+	if (order.FlightId != 0)
 	{
 		auto filter = [order](db::Order o)
 		{
 		  return o.FlightId == order.FlightId;
 		};
-		return FindMatch(OrderVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else
-	{
-		std::vector<db::Order> empty;
-		return empty;
-	}
+
+	return vec;
 }
 
 /**

@@ -43,9 +43,9 @@ ELSE ()
 ENDIF ()
 
 
-project(debug)
-add_executable(debug
-        debug.cpp
+project(test)
+add_executable(test
+        test/test.cpp
         model/definitions.h
         model/model.h
         model/Base.cpp model/Base.h
@@ -57,5 +57,6 @@ ELSE ()
     MESSAGE("Using fallback support for ranges library")
     ADD_DEFINITIONS(-DUSING_FALLBACK_SUPPORT)
     find_package(range-v3 CONFIG REQUIRED)
-    target_link_libraries(debug PRIVATE range-v3 range-v3-meta range-v3::meta range-v3-concepts)
+    target_link_libraries(test PRIVATE range-v3 range-v3-meta range-v3::meta range-v3-concepts)
 ENDIF ()
+
