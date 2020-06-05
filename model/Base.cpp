@@ -11,17 +11,17 @@
 #include <string>
 #include "Base.h"
 
-bool db::Base::InsertFlight(db::Flight flight)
+int db::Base::InsertFlight(db::Flight flight)
 {
 	return false;
 }
 
-bool db::Base::InsertCustomer(db::Customer customer)
+int db::Base::InsertCustomer(db::Customer customer)
 {
 	return false;
 }
 
-bool db::Base::InsertOrder(db::Order order)
+int db::Base::InsertOrder(db::Order order)
 {
 	return false;
 }

@@ -12,8 +12,15 @@
 #include <iostream>
 #include <algorithm>
 #include <cstring>
-#include <ranges>
 #include "linearEngine.h"
+
+#ifdef USING_FALLBACK_SUPPORT
+#include <range/v3/all.hpp>
+
+#else
+#include <ranges>
+
+#endif
 
 db::linearEngine::linearEngine(const std::string& path)
 {
@@ -89,7 +96,8 @@ void db::linearEngine::LoadFlightVec()
 		memcpy(&flight.MaxCapacity, data + cnt, sizeof(int));
 		cnt += sizeof(int);
 		memcpy(&flight.Current, data + cnt, sizeof(int));
-
+		cnt += sizeof(int);
+		memcpy(&flight.Time, data + cnt, sizeof(time_t));
 		FlightVec.push_back(flight);
 	}
 
@@ -149,7 +157,6 @@ void db::linearEngine::LoadOrderVec()
 		memcpy(&order.FlightId, data + cnt, sizeof(int));
 		cnt += sizeof(int);
 		memcpy(&order.SeatId, data + cnt, sizeof(int));
-
 		OrderVec.push_back(order);
 	}
 
@@ -160,49 +167,51 @@ void db::linearEngine::LoadOrderVec()
  * @brief insert a flight info into memory
  * @details the field flightId will be auto computed and no duplicate data will be inserted
  * @param flight the struct of flight to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return FlightId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertFlight(struct Flight flight)
+int db::linearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
 
 	auto f = QueryFlight(flight);
-	if (f.size() != 0) // existed
+	if (!f.empty()) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
 	flight.FlightId = ++FlightIdCnt;
 	FlightVec.push_back(flight);
 
-	return true;
+	return flight.FlightId;
 }
 
 /**
  * @brief insert a customer info into memory
  * @details the field customerId will be auto computed and no duplicate data will be inserted
  * @param customer the struct of customer to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return CustomerId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertCustomer(db::Customer customer)
+int db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
+	char backup = customer.Name[0];
 	customer.Name[0] = '\0';
 
 	auto c = QueryCustomer(customer);
-	if (c.size() != 0) // existed
+	if (!c.empty()) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
+	customer.Name[0] = backup;
 	customer.CustomerId = ++CustomerIdCnt;
 	CustomerVec.push_back(customer);
 
-	return true;
+	return customer.CustomerId;
 }
 
 /**
@@ -210,24 +219,24 @@ bool db::linearEngine::InsertCustomer(db::Customer customer)
  * @details (it will not check whether customerId or flightId existed or not)
  * the field orderId will be auto computed and no duplicate data will be inserted
  * @param order the struct of order to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return OrderId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertOrder(db::Order order)
+int db::linearEngine::InsertOrder(db::Order order)
 {
 	order.OrderId = 0;
 
 	auto o = QueryOrder(order);
-	if (o.size() != 0) // existed
+	if (!o.empty()) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
 	order.OrderId = ++OrderIdCnt;
 	OrderVec.push_back(order);
 
-	return true;
+	return order.OrderId;
 }
 
 /**
@@ -318,7 +327,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 
 /**
  * @brief query an order info
- * @details it will match the first none "NULL" field
+ * @details it will match CustomerId and FlightId together
  * @param order the query parameter
  * @return the desired data
  */
@@ -332,27 +341,27 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
 		};
 		return FindMatch(OrderVec, filter);
 	}
-	else if (order.CustomerId != 0)
+
+	std::vector<db::Order> vec = OrderVec;
+	if (order.CustomerId != 0)
 	{
 		auto filter = [order](db::Order o)
 		{
 		  return o.CustomerId == order.CustomerId;
 		};
-		return FindMatch(OrderVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else if (order.FlightId != 0)
+
+	if (order.FlightId != 0)
 	{
 		auto filter = [order](db::Order o)
 		{
 		  return o.FlightId == order.FlightId;
 		};
-		return FindMatch(OrderVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else
-	{
-		std::vector<db::Order> empty;
-		return empty;
-	}
+
+	return vec;
 }
 
 /**
@@ -495,7 +504,13 @@ template<typename T, typename Cmp>
 std::vector<T> db::linearEngine::FindMatch(std::vector<T>& vec, Cmp filter)
 {
 	std::vector<T> ret;
+
+#ifdef USING_FALLBACK_SUPPORT
+	auto result = vec | ranges::views::filter(filter);
+#else
 	auto result = vec | std::views::filter(filter);
+#endif
+
 	for (auto i : result)
 	{
 		ret.push_back(i);
