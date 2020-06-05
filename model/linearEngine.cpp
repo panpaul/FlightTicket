@@ -167,10 +167,10 @@ void db::linearEngine::LoadOrderVec()
  * @brief insert a flight info into memory
  * @details the field flightId will be auto computed and no duplicate data will be inserted
  * @param flight the struct of flight to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return FlightId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertFlight(struct Flight flight)
+int db::linearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
 
@@ -178,23 +178,23 @@ bool db::linearEngine::InsertFlight(struct Flight flight)
 	if (!f.empty()) // existed
 	{
 		std::cerr << "Flight Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
 	flight.FlightId = ++FlightIdCnt;
 	FlightVec.push_back(flight);
 
-	return true;
+	return flight.FlightId;
 }
 
 /**
  * @brief insert a customer info into memory
  * @details the field customerId will be auto computed and no duplicate data will be inserted
  * @param customer the struct of customer to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return CustomerId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertCustomer(db::Customer customer)
+int db::linearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
 	char backup = customer.Name[0];
@@ -204,14 +204,14 @@ bool db::linearEngine::InsertCustomer(db::Customer customer)
 	if (!c.empty()) // existed
 	{
 		std::cerr << "Customer Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
 	customer.Name[0] = backup;
 	customer.CustomerId = ++CustomerIdCnt;
 	CustomerVec.push_back(customer);
 
-	return true;
+	return customer.CustomerId;
 }
 
 /**
@@ -219,10 +219,10 @@ bool db::linearEngine::InsertCustomer(db::Customer customer)
  * @details (it will not check whether customerId or flightId existed or not)
  * the field orderId will be auto computed and no duplicate data will be inserted
  * @param order the struct of order to be inserted
- * @return true for success and false for error
- * @version 0.0.2
+ * @return OrderId for success and -1 for error
+ * @version 0.0.3
  */
-bool db::linearEngine::InsertOrder(db::Order order)
+int db::linearEngine::InsertOrder(db::Order order)
 {
 	order.OrderId = 0;
 
@@ -230,13 +230,13 @@ bool db::linearEngine::InsertOrder(db::Order order)
 	if (!o.empty()) // existed
 	{
 		std::cerr << "Order Existed" << std::endl;
-		return false;
+		return -1;
 	}
 
 	order.OrderId = ++OrderIdCnt;
 	OrderVec.push_back(order);
 
-	return true;
+	return order.OrderId;
 }
 
 /**

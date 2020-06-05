@@ -26,9 +26,9 @@ namespace db
 		explicit linearEngine(const std::string& path);
 		~linearEngine();
 
-		bool InsertFlight(struct Flight flight) override;
-		bool InsertCustomer(struct Customer customer) override;
-		bool InsertOrder(struct Order order) override;
+		int InsertFlight(struct Flight flight) override;
+		int InsertCustomer(struct Customer customer) override;
+		int InsertOrder(struct Order order) override;
 
 		std::vector<Flight> QueryFlight(struct Flight flight) override;
 		std::vector<Customer> QueryCustomer(struct Customer customer) override;

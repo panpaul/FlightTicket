@@ -22,9 +22,9 @@ namespace db
 	class Base
 	{
 	 protected:
-		virtual bool InsertFlight(struct Flight flight);
-		virtual bool InsertCustomer(struct Customer customer);
-		virtual bool InsertOrder(struct Order order);
+		virtual int InsertFlight(struct Flight flight);
+		virtual int InsertCustomer(struct Customer customer);
+		virtual int InsertOrder(struct Order order);
 
 		virtual std::vector<Flight> QueryFlight(struct Flight flight);
 		virtual std::vector<Customer> QueryCustomer(struct Customer customer);
