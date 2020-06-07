@@ -3,7 +3,6 @@
  * @brief the basic storage engine used in model
  * @details file I/O, basic query with O(n)
  * @author Paul
- * @email panyuxuan@hotmail.com
  * @version 0.0.1
  * @date 2020-5-22
  */

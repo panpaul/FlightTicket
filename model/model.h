@@ -3,7 +3,6 @@
  * @brief definitions of the structures used in model
  * @details includes the structures of flight, customer, order
  * @author Paul
- * @email panyuxuan@hotmail.com
  * @version 0.0.1
  * @date 2020-5-22
  */

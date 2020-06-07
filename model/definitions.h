@@ -2,7 +2,6 @@
  * @file definitions.h
  * @brief definitions of the length used in this project
  * @author Paul
- * @email panyuxuan@hotmail.com
  * @version 0.0.2
  * @date 2020-5-7
  */

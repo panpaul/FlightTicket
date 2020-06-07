@@ -3,14 +3,12 @@
  * @brief the basic storage engine used in model
  * @details file I/O, basic query with O(n). Notice: All field is unique
  * @author Paul
- * @email panyuxuan@hotmail.com
  * @version 0.0.2
  * @date 2020-5-22
  */
 
 #include <fstream>
 #include <iostream>
-#include <cstring>
 #include "LinearEngine.h"
 
 #ifdef USING_FALLBACK_SUPPORT
@@ -240,9 +238,10 @@ int db::LinearEngine::InsertOrder(db::Order order)
 
 /**
  * @brief query a flight info
- * @details it will match the first none "NULL" field
+ * @details it will match the none "NULL" field
  * @param flight the query parameter
  * @return the desired data
+ * @version 0.0.2
  */
 std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 {
@@ -254,41 +253,45 @@ std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 		};
 		return FindMatch(FlightVec, filter);
 	}
-	else if (flight.FlightName[0] != '\0')
+
+	auto vec = FlightVec;
+
+	if (flight.FlightName[0] != '\0')
 	{
 		auto filter = [flight](db::Flight f)
 		{
 		  return strcmp(f.FlightName, flight.FlightName) == 0;
 		};
-		return FindMatch(FlightVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else if (flight.Departure[0] != '\0')
+
+	if (flight.Departure[0] != '\0')
 	{
 		auto filter = [flight](db::Flight f)
 		{
 		  return strcmp(f.Departure, flight.Departure) == 0;
 		};
-		return FindMatch(FlightVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else if (flight.Destination[0] != '\0')
+
+	if (flight.Destination[0] != '\0')
 	{
 		auto filter = [flight](db::Flight f)
 		{
 		  return strcmp(f.Destination, flight.Destination) == 0;
 		};
-		return FindMatch(FlightVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else
-	{
-		return FlightVec;
-	}
+
+	return FlightVec;
 }
 
 /**
  * @brief query a customer info
- * @details it will match the first none "NULL" field
+ * @details it will match the none "NULL" field
  * @param customer the query parameter
  * @return the desired data
+ * @version 0.0.2
  */
 std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
 {
@@ -300,26 +303,28 @@ std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
 		};
 		return FindMatch(CustomerVec, filter);
 	}
-	else if (customer.Name[0] != '\0')
+
+	auto vec = CustomerVec;
+
+	if (customer.Name[0] != '\0')
 	{
 		auto filter = [customer](db::Customer c)
 		{
 		  return strcmp(c.Name, customer.Name) == 0;
 		};
-		return FindMatch(CustomerVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else if (customer.Id[0] != '\0')
+
+	if (customer.Id[0] != '\0')
 	{
 		auto filter = [customer](db::Customer c)
 		{
 		  return strcmp(c.Id, customer.Id) == 0;
 		};
-		return FindMatch(CustomerVec, filter);
+		vec = FindMatch(vec, filter);
 	}
-	else
-	{
-		return CustomerVec;
-	}
+
+	return CustomerVec;
 }
 
 /**

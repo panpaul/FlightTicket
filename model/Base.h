@@ -3,7 +3,6 @@
  * @brief interface the model
  * @details the integration of linearEngine and BTree
  * @author Paul
- * @email panyuxuan@hotmail.com
  * @version 0.0.2
  * @date 2020-5-22
  */
