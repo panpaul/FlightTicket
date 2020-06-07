@@ -160,7 +160,5 @@ void Service::Customer::DeleteOrder(const char* flightName)
 
 	flightVec[0].Current--;
 	engine->UpdateFlight(flightVec[0]);
-
-	std::cout << "订单删除成功 " << std::endl;
 }
 
