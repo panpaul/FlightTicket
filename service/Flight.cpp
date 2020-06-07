@@ -105,9 +105,9 @@ void Service::Flight::PrintFlights(const char* departure, const char* destinatio
 		return;
 	}
 
-	std::cout << "-------------------------" << std::endl;
 	for (auto& i : flightVec)
 	{
+		std::cout << "-------------------------" << std::endl;
 		std::cout << "航班名: " << i.FlightName << std::endl;
 		std::cout << "始发站: " << i.Departure << std::endl;
 		std::cout << "终点站: " << i.Destination << std::endl;
@@ -117,8 +117,9 @@ void Service::Flight::PrintFlights(const char* departure, const char* destinatio
 		{
 			std::cout << "出发时间: " << mbStr << '\n';
 		}
-		std::cout << "-------------------------" << std::endl;
+
 	}
+	std::cout << "-------------------------" << std::endl;
 }
 
 void Service::Flight::PrintCustomers()

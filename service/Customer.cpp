@@ -7,16 +7,16 @@ Service::Customer::Customer(const char* name, const char* id)
 {
 	int lenName = strlen(name);
 	int lenId = strlen(id);
-	if (lenName < (CUSTOMER_NAME_MAX_SIZE / sizeof(char)) && (lenId < (CUSTOMER_ID_MAX_SIZE / sizeof(id))))
-	{
-		strcpy(this->Name, name);
-		strcpy(this->Id, id);
-		QueryInfo();
-	}
-	else
+	if (
+		lenName >= (CUSTOMER_NAME_MAX_SIZE / sizeof(char)) ||
+		lenId >= (CUSTOMER_ID_MAX_SIZE / sizeof(char))
+		)
 	{
 		throw std::invalid_argument("姓名或身份信息长度不合法");
 	}
+	strcpy(this->Name, name);
+	strcpy(this->Id, id);
+	QueryInfo();
 }
 
 Service::Customer::~Customer()
@@ -35,6 +35,8 @@ bool Service::Customer::AddCustomer()
 
 void Service::Customer::QueryInfo()
 {
+	if (CustomerId > 0)
+		return;
 	db::Customer customer{};
 	customer.CustomerId = 0;
 	strcpy(customer.Name, Name);
@@ -54,6 +56,7 @@ void Service::Customer::PrintTickets()
 	if (orderVec.empty())
 	{
 		std::cout << "未查询到相关信息" << std::endl;
+		return;
 	}
 	for (auto i:orderVec)
 	{
@@ -68,12 +71,23 @@ void Service::Customer::PrintTickets()
 		{
 			std::cout << "出发时间: " << mbStr << '\n';
 		}
-		std::cout << "-------------------------" << std::endl;
+		std::cout << "座位号: " << i.SeatId << std::endl;
 	}
+	std::cout << "-------------------------" << std::endl;
 }
 
 void Service::Customer::MakeOrder(const char* flightName)
 {
+	if (CustomerId <= 0)
+	{
+		bool status = AddCustomer();
+		if (!status)
+		{
+			std::cout << "无法创建乘客信息" << std::endl;
+			return;
+		}
+	}
+
 	if (strlen(flightName) >= (FLIGHT_NAME_MAX_SIZE / sizeof(char)))
 	{
 		//throw std::invalid_argument("航班名称不合法");
@@ -106,8 +120,8 @@ void Service::Customer::MakeOrder(const char* flightName)
 		return;
 	}
 
-	flight.Current++;
-	engine->UpdateFlight(flight);
+	flightVec[0].Current++;
+	engine->UpdateFlight(flightVec[0]);
 
 	std::cout << "订票成功 " << std::endl;
 

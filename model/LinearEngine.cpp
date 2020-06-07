@@ -116,7 +116,7 @@ void db::LinearEngine::LoadCustomerVec()
 
 	ifs.read(reinterpret_cast<char*>(&CustomerIdCnt), sizeof(int));
 
-	while (ifs.read(data, FLIGHT_SIZE))
+	while (ifs.read(data, CUSTOMER_SIZE))
 	{
 		int cnt = 0;
 		memcpy(&customer.CustomerId, data + cnt, sizeof(int));
@@ -145,7 +145,7 @@ void db::LinearEngine::LoadOrderVec()
 
 	ifs.read(reinterpret_cast<char*>(&OrderIdCnt), sizeof(int));
 
-	while (ifs.read(data, FLIGHT_SIZE))
+	while (ifs.read(data, ORDER_SIZE))
 	{
 		int cnt = 0;
 		memcpy(&order.OrderId, data + cnt, sizeof(int));
@@ -155,6 +155,7 @@ void db::LinearEngine::LoadOrderVec()
 		memcpy(&order.FlightId, data + cnt, sizeof(int));
 		cnt += sizeof(int);
 		memcpy(&order.SeatId, data + cnt, sizeof(int));
+
 		OrderVec.push_back(order);
 	}
 
@@ -246,6 +247,12 @@ int db::LinearEngine::InsertOrder(db::Order order)
  */
 std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 {
+	if (flight.FlightId == -1)
+	{
+		std::vector<Flight> empty;
+		return empty;
+	}
+
 	if (flight.FlightId != 0)
 	{
 		auto filter = [flight](db::Flight f)
@@ -296,6 +303,12 @@ std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
  */
 std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
 {
+	if (customer.CustomerId == -1)
+	{
+		std::vector<Customer> empty;
+		return empty;
+	}
+
 	if (customer.CustomerId != 0)
 	{
 		auto filter = [customer](db::Customer c)
@@ -336,6 +349,12 @@ std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
  */
 std::vector<db::Order> db::LinearEngine::QueryOrder(db::Order order)
 {
+	if (order.OrderId == -1 || order.CustomerId == -1 || order.FlightId == -1)
+	{
+		std::vector<Order> empty;
+		return empty;
+	}
+
 	if (order.OrderId != 0)
 	{
 		auto filter = [order](db::Order o)

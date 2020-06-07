@@ -19,7 +19,7 @@ namespace Service
 
 	 private:
 		void QueryInfo();
-		int CustomerId = 0;
+		int CustomerId = -1;
 		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
 		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
 	};

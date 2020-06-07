@@ -18,7 +18,7 @@ namespace Service
 		void PrintCustomers();
 
 	 private:
-		int FlightId = 0;
+		int FlightId = -1;
 		char FlightName[FLIGHT_NAME_MAX_SIZE / sizeof(char)]{};
 		char Departure[FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)]{};
 		char Destination[FLIGHT_DESTINATION_MAX_SIZE / sizeof(char)]{};
