@@ -110,7 +110,7 @@ void Service::Flight::PrintFlights(const char* departure, const char* destinatio
 	{
 		std::cout << "航班名: " << i.FlightName << std::endl;
 		std::cout << "始发站: " << i.Departure << std::endl;
-		std::cout << "终点站: " << i.Departure << std::endl;
+		std::cout << "终点站: " << i.Destination << std::endl;
 		std::cout << "剩余座位: " << i.MaxCapacity - i.Current << std::endl;
 		char mbStr[100];
 		if (std::strftime(mbStr, sizeof(mbStr), "%a %H:%M:%S", std::gmtime(&i.Time)))
