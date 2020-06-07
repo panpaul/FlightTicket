@@ -9,6 +9,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstring>
 #include "LinearEngine.h"
 
 #ifdef USING_FALLBACK_SUPPORT
