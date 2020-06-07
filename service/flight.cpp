@@ -1,87 +1,169 @@
-#include "flight.h"
-flight::flight() = default;
-flight::flight(char *flightname){
-	strcpy(this->flightname,flightname);
-}
-flight::flight(char *flightname, char *departure, char *destination,int maxcapacity) {
-	int namelength = strlen(flightname);
-	int departurelength = strlen(departure);
-	int destinationlength = strlen(destination);
-	if((namelength <= FLIGHT_NAME_MAX_SIZE/sizeof(char))&&(departurelength <= FLIGHT_DEPARTURE_MAX_SIZE/sizeof(char))&&(destinationlength<=FLIGHT_DESTINATION_MAX_SIZE/sizeof(destination))){
-		strcpy(this->flightname,flightname);
-		strcpy(this->departure,departure);
-		strcpy(this->destination,destination);
-		this->MaxCapacity = maxcapacity;
+#include "Flight.h"
+#include <cstring>
+#include <iostream>
+#include <stdexcept>
+#include <ctime>
 
-		InsertFlight();
+Service::Flight::Flight(const char* flightName)
+{
+	int len = strlen(flightName);
+	if (len >= (FLIGHT_NAME_MAX_SIZE / sizeof(char)))
+	{
+		throw std::invalid_argument("航班名称长度不合法 ");
 	}
-	else flag = false;
-}
-flight::~flight() = default;
-void flight::InsertFlight() {
-	db::Flight flightStruct{};
-	strcpy(flightStruct.FlightName,this->flightname);
-	strcpy(flightStruct.Departure,this->departure);
-	strcpy(flightStruct.Destination,this->destination);
-	flightStruct.MaxCapacity = MaxCapacity;
-	flightStruct.Current = 0;
-
-	engine->InsertFlight(flightStruct);
+	strcpy(this->FlightName, flightName);
 }
 
-void flight::DeleteFlight(){
-	if(!flag)return;
-	db::Flight flightStruct{};
-	strcpy(flightStruct.FlightName,this->flightname);
+Service::Flight::~Flight() = default;
 
-	std::vector<db::Flight> flightlist = engine->QueryFlight(flightStruct);
+bool Service::Flight::AddFlight(const char* departure, const char* destination, int maxCapacity, time_t time)
+{
+	int lenDeparture = strlen(departure);
+	int lenDestination = strlen(destination);
 
-	if(flightlist.empty()){
-		std::cout<<"非法操作，无此航班，请检查航班号"<<std::endl;
+	if (
+		lenDeparture >= (FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)) ||
+		lenDestination >= (FLIGHT_DESTINATION_MAX_SIZE / sizeof(char))
+		)
+	{
+		std::cout << "出发站/终点站名称长度不合法 " << std::endl;
+		return false;
+	}
+
+	if (maxCapacity <= 0)
+	{
+		std::cout << "最大载客量不合法 " << std::endl;
+		return false;
+	}
+
+	strcpy(this->Departure, departure);
+	strcpy(this->Destination, destination);
+	this->MaxCapacity = maxCapacity;
+	this->Time = time;
+
+	db::Flight flight{};
+	strcpy(flight.FlightName, FlightName);
+	strcpy(flight.Departure, Departure);
+	strcpy(flight.Destination, Destination);
+	flight.MaxCapacity = MaxCapacity;
+	flight.Current = 0;
+	flight.Time = Time;
+
+	int id = engine->InsertFlight(flight);
+	if (id == -1)
+	{
+		std::cout << "航班添加失败 " << std::endl;
+		return false;
+	}
+	FlightId = id;
+
+	std::cout << "航班添加成功 " << std::endl;
+
+	return true;
+}
+
+void Service::Flight::DeleteFlight()
+{
+	QueryInfo();
+
+	if (FlightId == 0)
+	{
+		std::cout << "未查询到此航班 " << std::endl;
 		return;
 	}
-	engine->DeleteFlight(flightlist[0].FlightId);
+
+	bool status = engine->DeleteFlight(FlightId);
+	if (status)
+		std::cout << "成功删除航班 " << std::endl;
+	else
+		std::cout << "航班删除失败 " << std::endl;
+
 }
 
-void flight::QueryFlightbyDestination(char *destination){
-	if(!flag)return ;
-	db::Flight flightStruct{};
-	strcpy(flightStruct.Destination,destination);
+void Service::Flight::PrintFlights(const char* departure, const char* destination)
+{
+	int lenDeparture = strlen(departure);
+	int lenDestination = strlen(destination);
 
-	std::vector<db::Flight> list = engine->QueryFlight(flightStruct);
-	if(list.empty()){
-		std::cout<<"非法操作，无此航班，请检查航班号"<<std::endl;
+	if (
+		lenDeparture >= (FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)) ||
+		lenDestination >= (FLIGHT_DESTINATION_MAX_SIZE / sizeof(char))
+		)
+	{
+		std::cout << "出发站/终点站名称长度不合法 " << std::endl;
 		return;
 	}
 
-	std::cout<<"-------------------------"<<std::endl;
-	for(auto itra = list.begin();itra != list.end();itra++){
-		std::cout<<"航班号:"<<(*itra).FlightName<<std::endl;
-		std::cout<<"始发站:"<<(*itra).Departure<<std::endl;
-		std::cout<<"剩余座位:"<<(*itra).Current<<std::endl;
-		std::cout<<"-------------------------"<<std::endl;
+	db::Flight flight{};
+	strcpy(flight.Departure, destination);
+	strcpy(flight.Destination, destination);
+
+	auto flightVec = engine->QueryFlight(flight);
+	if (flightVec.empty())
+	{
+		std::cout << "未查询到相关航班 " << std::endl;
+		return;
+	}
+
+	std::cout << "-------------------------" << std::endl;
+	for (auto& i : flightVec)
+	{
+		std::cout << "航班名: " << i.FlightName << std::endl;
+		std::cout << "始发站: " << i.Departure << std::endl;
+		std::cout << "终点站: " << i.Departure << std::endl;
+		std::cout << "剩余座位: " << i.MaxCapacity - i.Current << std::endl;
+		char mbStr[100];
+		if (std::strftime(mbStr, sizeof(mbStr), "%a %H:%M:%S", std::gmtime(&i.Time)))
+		{
+			std::cout << "出发时间: " << mbStr << '\n';
+		}
+		std::cout << "-------------------------" << std::endl;
 	}
 }
-void flight::QueryFlightbyFlightname(char *flightname) {
-	if(!flag)return ;
-	db::Flight flightStruct{};
-	strcpy(flightStruct.FlightName,flightname);
-	std::vector<db::Flight> flightlist = engine->QueryFlight(flightStruct);
 
-	db::Order orderStruct{};
-	orderStruct.FlightId = flightlist[0].FlightId;
-	std::vector<db::Order> orderlist = engine->QueryOrder(orderStruct);
+void Service::Flight::PrintCustomers()
+{
+	QueryInfo();
 
+	db::Order order{};
+	order.FlightId = FlightId;
+	auto orderVec = engine->QueryOrder(order);
+	if (orderVec.empty())
+	{
+		std::cout << "未查询到相关乘客 " << std::endl;
+		return;
+	}
 
-	std::cout<<"-------------------------"<<std::endl;
-	for(auto itra = orderlist.begin();itra != orderlist.end();itra++){
-		db::Customer customerStruct{};
-		customerStruct.CustomerId = (*itra).CustomerId;
-		std::vector<db::Customer>customerlist = engine->QueryCustomer(customerStruct);
-		std::cout<<"乘客姓名:"<<customerlist[0].Name<<std::endl;
-		std::cout<<"ID:"<<customerlist[0].Id<<std::endl;
-		std::cout<<"乘客ID:"<<(*itra).CustomerId<<std::endl;
-		std::cout<<"座位号:"<<(*itra).SeatId<<std::endl;
-		std::cout<<"-------------------------"<<std::endl;
+	std::cout << "-------------------------" << std::endl;
+	for (auto& i : orderVec)
+	{
+		db::Customer customer{};
+		customer.CustomerId = i.CustomerId;
+		auto customerVec = engine->QueryCustomer(customer);
+
+		std::cout << "姓名: " << customerVec[0].Name << std::endl;
+		std::cout << "证件号: " << customerVec[0].Id << std::endl;
+		std::cout << "座位号: " << i.SeatId << std::endl;
+		std::cout << "-------------------------" << std::endl;
+	}
+}
+
+void Service::Flight::QueryInfo()
+{
+	if (FlightId > 0) return;
+
+	db::Flight flight{};
+	flight.FlightId = 0;
+	strcpy(flight.FlightName, FlightName);
+
+	auto vec = engine->QueryFlight(flight);
+	if (!vec.empty())
+	{
+		FlightId = vec[0].FlightId;
+		strcpy(this->Departure, vec[0].Departure);
+		strcpy(this->Destination, vec[0].Destination);
+		this->MaxCapacity = vec[0].MaxCapacity;
+		this->Current = vec[0].Current;
+		this->Time = vec[0].Time;
 	}
 }

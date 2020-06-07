@@ -12,6 +12,7 @@
 #define _LINEARENGINE_H_
 
 #include <vector>
+#include <string>
 #include "model.h"
 #include "Base.h"
 
@@ -20,11 +21,11 @@ namespace db
 	/**
 	 * @brief the basic storage engine used in model
 	 */
-	class linearEngine : Base
+	class LinearEngine : Base
 	{
 	 public:
-		explicit linearEngine(const std::string& path);
-		~linearEngine();
+		explicit LinearEngine(const std::string& path);
+		~LinearEngine();
 
 		int InsertFlight(struct Flight flight) override;
 		int InsertCustomer(struct Customer customer) override;

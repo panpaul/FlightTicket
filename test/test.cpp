@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "../model/linearEngine.h"
+#include "../model/LinearEngine.h"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ int main()
 
 void FlightTest()
 {
-	auto engine = new db::linearEngine(".");
+	auto engine = new db::LinearEngine(".");
 	int status = 0;
 
 	// Test Insertion
@@ -62,7 +62,7 @@ void FlightTest()
 	delete engine;
 
 	// Test Storage
-	engine = new db::linearEngine(".");
+	engine = new db::LinearEngine(".");
 	vec = engine->QueryFlight(db::Flight{ 1 });
 	AssertTrue(vec.size() == 1);
 

@@ -27,11 +27,11 @@ project(FlightTicket)
 add_executable(FlightTicket
         console/main.cpp
         model/definitions.h
-        service/Customer.cpp service/Customer.h service/flight.cpp service/flight.h
+        service/Customer.cpp service/Customer.h service/Flight.cpp service/Flight.h
         model/Base.cpp model/Base.h
-        model/linearEngine.cpp model/linearEngine.h
+        model/LinearEngine.cpp model/LinearEngine.h
         model/model.h
-        )
+        service/service.cpp)
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" GREATER_EQUAL "10")
     MESSAGE("Using ranges library provided by GNU")
@@ -49,7 +49,7 @@ add_executable(test
         model/definitions.h
         model/model.h
         model/Base.cpp model/Base.h
-        model/linearEngine.cpp model/linearEngine.h
+        model/LinearEngine.cpp model/LinearEngine.h
         )
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" GREATER_EQUAL "10")
     MESSAGE("Using ranges library provided by GNU")

@@ -1,13 +1,12 @@
 #ifndef _SERVICE_H_
 #define _SERVICE_H_
 
-#include "../model/linearEngine.h"
+#include <iostream>
+#include "../model/LinearEngine.h"
 
-static db::linearEngine* engine;
-
-void Setup()
+namespace Service
 {
-	engine = new db::linearEngine(".");
+	extern db::LinearEngine* engine;
+	void Shutdown();
 }
-
 #endif //_SERVICE_H_

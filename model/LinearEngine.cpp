@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
-#include "linearEngine.h"
+#include "LinearEngine.h"
 
 #ifdef USING_FALLBACK_SUPPORT
 #include <range/v3/all.hpp>
@@ -21,7 +21,7 @@
 
 #endif
 
-db::linearEngine::linearEngine(const std::string& path)
+db::LinearEngine::LinearEngine(const std::string& path)
 {
 	BasePath = path;
 	LoadFlightVec();
@@ -29,7 +29,7 @@ db::linearEngine::linearEngine(const std::string& path)
 	LoadOrderVec();
 }
 
-db::linearEngine::~linearEngine()
+db::LinearEngine::~LinearEngine()
 {
 	SaveVec(FlightVec, FlightIdCnt, FLIGHT_SIZE, BasePath + "/flight.data");
 	SaveVec(CustomerVec, CustomerIdCnt, CUSTOMER_SIZE, BasePath + "/customer.data");
@@ -45,7 +45,7 @@ db::linearEngine::~linearEngine()
  * @param file the file path of the data
  */
 template<typename T>
-void db::linearEngine::SaveVec(std::vector<T>& vec, int cnt, int size, const std::string& file)
+void db::LinearEngine::SaveVec(std::vector<T>& vec, int cnt, int size, const std::string& file)
 {
 	std::ofstream ofs(file,
 		std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
@@ -67,7 +67,7 @@ void db::linearEngine::SaveVec(std::vector<T>& vec, int cnt, int size, const std
 	ofs.close();
 }
 
-void db::linearEngine::LoadFlightVec()
+void db::LinearEngine::LoadFlightVec()
 {
 	char data[FLIGHT_SIZE + 1];
 	struct Flight flight{};
@@ -75,7 +75,7 @@ void db::linearEngine::LoadFlightVec()
 	if (!ifs.is_open())
 	{
 		// failed to open
-		std::cerr << "Failed to open " << BasePath + "/flight.data" << std::endl;
+		std::cerr << "Failed to open " << BasePath << "/flight.data" << std::endl;
 		return;
 	}
 
@@ -103,7 +103,7 @@ void db::linearEngine::LoadFlightVec()
 	ifs.close();
 }
 
-void db::linearEngine::LoadCustomerVec()
+void db::LinearEngine::LoadCustomerVec()
 {
 	char data[CUSTOMER_SIZE + 1];
 	struct Customer customer{};
@@ -111,7 +111,7 @@ void db::linearEngine::LoadCustomerVec()
 	if (!ifs.is_open())
 	{
 		// failed to open
-		std::cerr << "Failed to open " << BasePath + "/customer.data" << std::endl;
+		std::cerr << "Failed to open " << BasePath << "/customer.data" << std::endl;
 		return;
 	}
 
@@ -132,7 +132,7 @@ void db::linearEngine::LoadCustomerVec()
 	ifs.close();
 }
 
-void db::linearEngine::LoadOrderVec()
+void db::LinearEngine::LoadOrderVec()
 {
 	char data[ORDER_SIZE + 1];
 	struct Order order{};
@@ -140,7 +140,7 @@ void db::linearEngine::LoadOrderVec()
 	if (!ifs.is_open())
 	{
 		// failed to open
-		std::cerr << "Failed to open " << BasePath + "/order.data" << std::endl;
+		std::cerr << "Failed to open " << BasePath << "/order.data" << std::endl;
 		return;
 	}
 
@@ -169,7 +169,7 @@ void db::linearEngine::LoadOrderVec()
  * @return FlightId for success and -1 for error
  * @version 0.0.3
  */
-int db::linearEngine::InsertFlight(struct Flight flight)
+int db::LinearEngine::InsertFlight(struct Flight flight)
 {
 	flight.FlightId = 0;
 
@@ -193,7 +193,7 @@ int db::linearEngine::InsertFlight(struct Flight flight)
  * @return CustomerId for success and -1 for error
  * @version 0.0.3
  */
-int db::linearEngine::InsertCustomer(db::Customer customer)
+int db::LinearEngine::InsertCustomer(db::Customer customer)
 {
 	customer.CustomerId = 0;
 	char backup = customer.Name[0];
@@ -221,7 +221,7 @@ int db::linearEngine::InsertCustomer(db::Customer customer)
  * @return OrderId for success and -1 for error
  * @version 0.0.3
  */
-int db::linearEngine::InsertOrder(db::Order order)
+int db::LinearEngine::InsertOrder(db::Order order)
 {
 	order.OrderId = 0;
 
@@ -244,7 +244,7 @@ int db::linearEngine::InsertOrder(db::Order order)
  * @param flight the query parameter
  * @return the desired data
  */
-std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
+std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 {
 	if (flight.FlightId != 0)
 	{
@@ -280,8 +280,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
 	}
 	else
 	{
-		std::vector<db::Flight> empty;
-		return empty;
+		return FlightVec;
 	}
 }
 
@@ -291,7 +290,7 @@ std::vector<db::Flight> db::linearEngine::QueryFlight(struct Flight flight)
  * @param customer the query parameter
  * @return the desired data
  */
-std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
+std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
 {
 	if (customer.CustomerId != 0)
 	{
@@ -319,8 +318,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
 	}
 	else
 	{
-		std::vector<db::Customer> empty;
-		return empty;
+		return CustomerVec;
 	}
 }
 
@@ -330,7 +328,7 @@ std::vector<db::Customer> db::linearEngine::QueryCustomer(db::Customer customer)
  * @param order the query parameter
  * @return the desired data
  */
-std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
+std::vector<db::Order> db::LinearEngine::QueryOrder(db::Order order)
 {
 	if (order.OrderId != 0)
 	{
@@ -369,7 +367,7 @@ std::vector<db::Order> db::linearEngine::QueryOrder(db::Order order)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::DeleteFlight(int flightId)
+bool db::LinearEngine::DeleteFlight(int flightId)
 {
 	for (auto iter = FlightVec.begin(); iter != FlightVec.end(); ++iter)
 	{
@@ -388,7 +386,7 @@ bool db::linearEngine::DeleteFlight(int flightId)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::DeleteCustomer(int customerId)
+bool db::LinearEngine::DeleteCustomer(int customerId)
 {
 	for (auto iter = CustomerVec.begin(); iter != CustomerVec.end(); ++iter)
 	{
@@ -407,7 +405,7 @@ bool db::linearEngine::DeleteCustomer(int customerId)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::DeleteOrder(int orderId)
+bool db::LinearEngine::DeleteOrder(int orderId)
 {
 	for (auto iter = OrderVec.begin(); iter != OrderVec.end(); ++iter)
 	{
@@ -427,7 +425,7 @@ bool db::linearEngine::DeleteOrder(int orderId)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::UpdateFlight(db::Flight flight)
+bool db::LinearEngine::UpdateFlight(db::Flight flight)
 {
 	if (flight.FlightId == 0)return false;
 	for (auto& i : FlightVec)
@@ -453,7 +451,7 @@ bool db::linearEngine::UpdateFlight(db::Flight flight)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::UpdateCustomer(db::Customer customer)
+bool db::LinearEngine::UpdateCustomer(db::Customer customer)
 {
 	if (customer.CustomerId == 0)return false;
 	for (auto& i : CustomerVec)
@@ -475,7 +473,7 @@ bool db::linearEngine::UpdateCustomer(db::Customer customer)
  * @return true for success and false for error
  * @version 0.0.1
  */
-bool db::linearEngine::UpdateOrder(db::Order order)
+bool db::LinearEngine::UpdateOrder(db::Order order)
 {
 	if (order.OrderId == 0)return false;
 	for (auto& i : OrderVec)
@@ -501,7 +499,7 @@ bool db::linearEngine::UpdateOrder(db::Order order)
  * @version 0.0.1
  */
 template<typename T, typename Cmp>
-std::vector<T> db::linearEngine::FindMatch(std::vector<T>& vec, Cmp filter)
+std::vector<T> db::LinearEngine::FindMatch(std::vector<T>& vec, Cmp filter)
 {
 	std::vector<T> ret;
 

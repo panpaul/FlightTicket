@@ -1,28 +1,27 @@
-//
-// Created by panyuxuan on 2020/5/7.
-//
-
 #include "../service/Customer.h"
-#include "../service/flight.h"
+#include "../service/Flight.h"
 #include <iostream>
 
 using namespace std;
 
-void print()
+void Print()
 {
-	cout << "请选择功能：" << endl;
-	cout << "\t0)退出" << endl;
-	cout << "\t1)查询航班" << endl;
-	cout << "\t2)浏览乘客信息" << endl;
-	cout << "\t3)乘客订票" << endl;
-	cout << "\t4)乘客退票" << endl;
-	cout << "\t5)增加航班" << endl;
-	cout << "\t6)删除航班" << endl;
+	cout << endl;
+	cout << "请选择功能: " << endl;
+	cout << "\t0)退出 " << endl;
+	cout << "\t1)查询航班 " << endl;
+	cout << "\t2)浏览乘客订单信息 " << endl;
+	cout << "\t3)浏览航班订单信息 " << endl;
+	cout << "\t4)乘客订票 " << endl;
+	cout << "\t5)乘客退票 " << endl;
+	cout << "\t6)增加航班 " << endl;
+	cout << "\t7)删除航班 " << endl;
 	cout << "请输入您的选择: ";
 }
 
 void QueryFlight();
-void QueryCustomer();
+void QueryTickets();
+void QueryCustomers();
 void Order();
 void RemoveOrder();
 void InsertFlight();
@@ -30,16 +29,22 @@ void DeleteFlight();
 
 int main(int argc, char* argv[])
 {
-	setlocale(LC_ALL, "");
+	//setlocale(LC_ALL, "");
+
+	//Service::Setup();
 
 	while (true)
 	{
 		unsigned choices;
-		print();
+		Print();
 		cin >> choices;
 		cout << endl;
-		if (choices == 0)break;
-		if (choices > 6)
+		if (choices == 0)
+		{
+			Service::Shutdown();
+			break;
+		}
+		if (choices > 7)
 		{
 			cout << "输入错误" << endl;
 			continue;
@@ -50,229 +55,203 @@ int main(int argc, char* argv[])
 			QueryFlight();
 			break;
 		case 2:
-			QueryCustomer();
+			QueryTickets();
 			break;
 		case 3:
-			Order();
+			QueryCustomers();
 			break;
 		case 4:
-			RemoveOrder();
+			Order();
 			break;
 		case 5:
-			InsertFlight();
+			RemoveOrder();
 			break;
 		case 6:
+			InsertFlight();
+			break;
+		case 7:
 			DeleteFlight();
 			break;
 		default:
 			break;
 		}
-
 	}
-
 	return 0;
 }
 
 void QueryFlight()
 {
-	string dest;
-	cout << "请输入终点站: ";
+	string dest, dep;
+	cout << "请输入起点站(任意请输入*): ";
+	cin >> dep;
+	cout << "请输入终点站(任意请输入*): ";
 	cin >> dest;
-	cout << endl;
-	while (dest.length() >= FLIGHT_DESTINATION_MAX_SIZE/sizeof(char))
-	{
-		cout << "终点站长度过长，请重试: ";
-		cin >> dest;
-		cout<< endl;
-	}
-	char* destination;
-	strcpy(destination,dest.c_str());
-	flight flig;
-	flig.QueryFlightbyDestination(destination);
+	if (dep[0] == '*')dep[0] = '\0';
+	if (dest[0] == '*')dest[0] = '\0';
+
+	Service::Flight::PrintFlights(dep.c_str(), dest.c_str());
 }
 
-void QueryCustomer()
+void QueryTickets()
 {
 	string name, id;
-
 	cout << "请输入姓名: ";
 	cin >> name;
-	cout << endl;
-	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
-	{
-		cout << "姓名长度过长，请重试: ";
-		cin >> name;
-		cout << endl;
-	}
-
 	cout << "请输入证件号: ";
 	cin >> id;
-	cout << endl;
-	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
+
+	try
 	{
-		cout << "证件长度过长，请重试: ";
-		cin >> id;
-		cout << endl;
+		auto customer = new Service::Customer(name.c_str(), id.c_str());
+		customer->PrintTickets();
+		delete customer;
+	}
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
 	}
 
-	char* Name ;
-	strcpy(Name,name.c_str());
-	char* Id ;
-	strcpy(Id,id.c_str());
-	customer cust(Name,Id);
-	cust.QueryCustomer();
+}
+
+void QueryCustomers()
+{
+	string flightName;
+	cout << "请输入航班名: ";
+	cin >> flightName;
+
+	try
+	{
+		auto flight = new Service::Flight(flightName.c_str());
+		flight->PrintCustomers();
+		delete flight;
+	}
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
+	}
 }
 
 void Order()
 {
-	string name, id , flightname;
+	string name, id, flightName;
 
 	cout << "请输入姓名: ";
 	cin >> name;
-	cout << endl;
-	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
-	{
-		cout << "姓名长度过长，请重试: ";
-		cin >> name;
-		cout << endl;
-	}
-
 	cout << "请输入证件号: ";
 	cin >> id;
-	cout << endl;
-	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
+	cout << "请输入航班名: ";
+	cin >> flightName;
+
+	try
 	{
-		cout << "证件长度过长，请重试: ";
-		cin >> id;
-		cout << endl;
+		auto customer = new Service::Customer(name.c_str(), id.c_str());
+		customer->MakeOrder(flightName.c_str());
+		delete customer;
 	}
-
-	cout << "请输入航班号: ";
-	cin>>flightname;
-	cout << endl;
-	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
-		cout << "航班号过长，请重试: ";
-		cin >> flightname;
-		cout << endl;
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
 	}
-
-
-	char* Name ;
-	strcpy(Name,name.c_str());
-	char* Id ;
-	strcpy(Id,id.c_str());
-	char* Flightname;
-	strcpy(Flightname,flightname.c_str());
-	customer cust(Name,Id);
-	cust.MakeOrder(Flightname);
 }
 
 void RemoveOrder()
 {
-	string name, id , flightname;
+	string name, id, flightName;
 
 	cout << "请输入姓名: ";
 	cin >> name;
-	cout << endl;
-	while (name.length() >= CUSTOMER_NAME_MAX_SIZE/sizeof(char))
-	{
-		cout << "姓名长度过长，请重试: ";
-		cin >> name;
-		cout << endl;
-	}
-
 	cout << "请输入证件号: ";
 	cin >> id;
-	cout << endl;
-	while (id.length() >= CUSTOMER_ID_MAX_SIZE/sizeof(char))
+	cout << "请输入航班名: ";
+	cin >> flightName;
+
+	try
 	{
-		cout << "证件长度过长，请重试: ";
-		cin >> id;
-		cout << endl;
+		auto customer = new Service::Customer(name.c_str(), id.c_str());
+		customer->DeleteOrder(flightName.c_str());
+		delete customer;
 	}
-
-	cout << "请输入航班号: ";
-	cin>>flightname;
-	cout << endl;
-	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
-		cout << "航班号过长，请重试: ";
-		cin >> flightname;
-		cout << endl;
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
 	}
-
-
-	char* Name ;
-	strcpy(Name,name.c_str());
-	char* Id ;
-	strcpy(Id,id.c_str());
-	char* Flightname;
-	strcpy(Flightname,flightname.c_str());
-	customer cust(Name,Id);
-	cust.DeleteOrder(Flightname);
-
 
 }
 
 void InsertFlight()
 {
-	string flightname,departure,destination;
-	int maxcapacity;
+	string flightName, departure, destination;
+	int maxCapacity, week, hour, minute;
+	time_t time = 0;
+	// 1970.1.1 -> Thursday
+	time += 4 * 24 * 60 * 60;
 
-	cout << "请输入航班号: ";
-	cin>>flightname;
-	cout<<endl;
-	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
-		cout << "航班号过长，请重试: ";
-		cin >> flightname;
-		cout<<endl;
-	}
+	cout << "请输入航班名称: ";
+	cin >> flightName;
 
-
-	cout << "请输入始发站: ";
+	cout << "请输入出发站: ";
 	cin >> departure;
-	cout<<endl;
-	while (departure.length() >= FLIGHT_DEPARTURE_MAX_SIZE/sizeof(char))
-	{
-		cout << "始发站长度过长，请重试: ";
-		cin >> departure;
-		cout<<endl;
-	}
 
-	cout << "请输入终点站号: ";
+	cout << "请输入终点站: ";
 	cin >> destination;
-	cout<<endl;
-	while (destination.length() >= FLIGHT_DESTINATION_MAX_SIZE/sizeof(char))
+
+	cout << "请输入最大容量: ";
+	cin >> maxCapacity;
+
+	cout << "请输入航班起飞星期: ";
+	cin >> week;
+	while (week > 7 || week < 1)
 	{
-		cout << "终点站长度过长，请重试: ";
-		cin >> destination;
-		cout<<endl;
+		cout << "输入星期不合法，请输入1到7内整数: " << endl;
+		cin >> week;
+	}
+	time += (week - 1) * 24 * 60 * 60;
+
+	cout << "请输入航班起飞小时: ";
+	cin >> hour;
+	while (hour > 24 || week < 0)
+	{
+		cout << "输入小时不合法，请输入0到24内整数 " << endl;
+		cin >> hour;
+	}
+	time += hour * 60 * 60;
+
+	cout << "请输入航班起飞分钟: ";
+	cin >> minute;
+	while (minute > 60 || minute < 0)
+	{
+		cout << "输入分钟不合法，请输入0到60内整数 " << endl;
+		cin >> minute;
+	}
+	time += minute * 60;
+
+	try
+	{
+		auto flight = new Service::Flight(flightName.c_str());
+		flight->AddFlight(departure.c_str(), destination.c_str(), maxCapacity, time);
+		delete flight;
+	}
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
 	}
 
-	cout<<"输入最大座位数：";
-	cin>>maxcapacity;
-	cout<<endl;
-
-	char* Flightname;
-	strcpy(Flightname,flightname.c_str());
-	char* Departure ;
-	strcpy(Departure, departure.c_str());
-	char* Destination ;
-	strcpy(Destination, destination.c_str());
-	flight flig(Flightname,Departure,Destination,maxcapacity);
 }
 
 void DeleteFlight()
 {
-	string flightname;
-	cout << "请输入航班号: " << endl;
-	cin>>flightname;
-	while(flightname.length()>=FLIGHT_NAME_MAX_SIZE/sizeof(char)){
-		cout << "航班号过长，请重试: " << endl;
-		cin >> flightname;
-	}
-	char* Flightname;
-	strcpy(Flightname, flightname.c_str());
+	string flightName;
+	cout << "请输入航班名: " << endl;
+	cin >> flightName;
 
-	flight flig(Flightname);
-	flig.DeleteFlight();
+	try
+	{
+		auto flight = new Service::Flight(flightName.c_str());
+		flight->DeleteFlight();
+		delete flight;
+	}
+	catch (invalid_argument& e)
+	{
+		cout << e.what() << endl;
+	}
 }

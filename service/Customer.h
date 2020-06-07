@@ -3,23 +3,25 @@
 
 #include "service.h"
 #include "../model/definitions.h"
-#include "../model/linearEngine.h"
+#include "../model/LinearEngine.h"
 
-class Customer
+namespace Service
 {
- public:
-	Customer(char* name, char* id);
-	~Customer();
-	bool InsertCustomer();
-	void PrintTickets();
-	void MakeOrder(char* flightName);
-	void DeleteOrder(char* flightName);
+	class Customer
+	{
+	 public:
+		Customer(const char* name, const char* id);
+		~Customer();
+		bool AddCustomer();
+		void PrintTickets();
+		void MakeOrder(const char* flightName);
+		void DeleteOrder(const char* flightName);
 
- private:
-	void QueryInfo();
-	int CustomerId;
-	char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
-	char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
-};
-
+	 private:
+		void QueryInfo();
+		int CustomerId = 0;
+		char Name[CUSTOMER_NAME_MAX_SIZE / sizeof(char)]{};
+		char Id[CUSTOMER_ID_MAX_SIZE / sizeof(char)]{};
+	};
+}
 #endif //FLIGHTTICKET_SERVICE_CUSTOMER_H_
