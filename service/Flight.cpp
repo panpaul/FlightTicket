@@ -95,7 +95,7 @@ void Service::Flight::PrintFlights(const char* departure, const char* destinatio
 	}
 
 	db::Flight flight{};
-	strcpy(flight.Departure, destination);
+	strcpy(flight.Departure, departure);
 	strcpy(flight.Destination, destination);
 
 	auto flightVec = engine->QueryFlight(flight);

@@ -284,7 +284,7 @@ std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 		vec = FindMatch(vec, filter);
 	}
 
-	return FlightVec;
+	return vec;
 }
 
 /**
@@ -325,7 +325,7 @@ std::vector<db::Customer> db::LinearEngine::QueryCustomer(db::Customer customer)
 		vec = FindMatch(vec, filter);
 	}
 
-	return CustomerVec;
+	return vec;
 }
 
 /**
