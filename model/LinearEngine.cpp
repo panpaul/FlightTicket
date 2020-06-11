@@ -262,16 +262,16 @@ std::vector<db::Flight> db::LinearEngine::QueryFlight(struct Flight flight)
 		return FindMatch(FlightVec, filter);
 	}
 
-	auto vec = FlightVec;
-
 	if (flight.FlightName[0] != '\0')
 	{
 		auto filter = [flight](db::Flight f)
 		{
 		  return strcmp(f.FlightName, flight.FlightName) == 0;
 		};
-		vec = FindMatch(vec, filter);
+		return FindMatch(FlightVec, filter);
 	}
+
+	auto vec = FlightVec;
 
 	if (flight.Departure[0] != '\0')
 	{
