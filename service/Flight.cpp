@@ -6,7 +6,7 @@
 
 Service::Flight::Flight(const char* flightName)
 {
-	int len = strlen(flightName);
+	auto len = strlen(flightName);
 	if (len >= (FLIGHT_NAME_MAX_SIZE / sizeof(char)))
 	{
 		throw std::invalid_argument("航班名称长度不合法 ");
@@ -18,8 +18,8 @@ Service::Flight::~Flight() = default;
 
 bool Service::Flight::AddFlight(const char* departure, const char* destination, int maxCapacity, time_t time)
 {
-	int lenDeparture = strlen(departure);
-	int lenDestination = strlen(destination);
+	auto lenDeparture = strlen(departure);
+	auto lenDestination = strlen(destination);
 
 	if (
 		lenDeparture >= (FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)) ||
@@ -82,8 +82,8 @@ void Service::Flight::DeleteFlight()
 
 void Service::Flight::PrintFlights(const char* departure, const char* destination)
 {
-	int lenDeparture = strlen(departure);
-	int lenDestination = strlen(destination);
+	auto lenDeparture = strlen(departure);
+	auto lenDestination = strlen(destination);
 
 	if (
 		lenDeparture >= (FLIGHT_DEPARTURE_MAX_SIZE / sizeof(char)) ||

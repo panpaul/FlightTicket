@@ -69,3 +69,6 @@ bool db::Base::UpdateOrder(db::Order order)
 {
 	return false;
 }
+
+db::Base::~Base()
+= default;

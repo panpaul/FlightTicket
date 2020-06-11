@@ -5,8 +5,8 @@
 
 Service::Customer::Customer(const char* name, const char* id)
 {
-	int lenName = strlen(name);
-	int lenId = strlen(id);
+	auto lenName = strlen(name);
+	auto lenId = strlen(id);
 	if (
 		lenName >= (CUSTOMER_NAME_MAX_SIZE / sizeof(char)) ||
 		lenId >= (CUSTOMER_ID_MAX_SIZE / sizeof(char))

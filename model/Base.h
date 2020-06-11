@@ -21,6 +21,8 @@ namespace db
 	class Base
 	{
 	 protected:
+		virtual ~Base();
+
 		virtual int InsertFlight(struct Flight flight);
 		virtual int InsertCustomer(struct Customer customer);
 		virtual int InsertOrder(struct Order order);
