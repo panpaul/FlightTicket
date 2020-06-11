@@ -9,13 +9,6 @@
 #ifndef _DEFINITIONS_H_
 #define _DEFINITIONS_H_
 
-/**
- * @brief Data can be stored
- * only used in hashtable
- * @deprecated
- */
-#define MAX_DATA 10000
-
 /// The max length of the customer's name
 #define CUSTOMER_NAME_MAX_SIZE 20*sizeof(char)
 /// The max length of the customer's id
