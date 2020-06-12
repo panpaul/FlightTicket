@@ -1,5 +1,5 @@
 /**
- * @file base.h
+ * @file base.cpp
  * @brief interface the model
  * @details the integration of linearEngine and BTree
  * @author Paul

@@ -22,6 +22,10 @@ Service::Customer::Customer(const char* name, const char* id)
 Service::Customer::~Customer()
 = default;
 
+/**
+ * @brief Add customer into model
+ * @return true for success and false for error
+ */
 bool Service::Customer::AddCustomer()
 {
 	db::Customer customer{};
@@ -33,6 +37,9 @@ bool Service::Customer::AddCustomer()
 	return true;
 }
 
+/**
+ * @brief fetch customer's info
+ */
 void Service::Customer::QueryInfo()
 {
 	if (CustomerId > 0)
@@ -48,6 +55,9 @@ void Service::Customer::QueryInfo()
 	}
 }
 
+/**
+ * @brief print all tickets into stdout
+ */
 void Service::Customer::PrintTickets()
 {
 	db::Order order{ 0, CustomerId, 0, 0 };
@@ -76,6 +86,10 @@ void Service::Customer::PrintTickets()
 	std::cout << "-------------------------" << std::endl;
 }
 
+/**
+ * @brief make an order
+ * @param flightName the name of the flight to be ordered
+ */
 void Service::Customer::MakeOrder(const char* flightName)
 {
 	if (CustomerId <= 0)
@@ -127,6 +141,10 @@ void Service::Customer::MakeOrder(const char* flightName)
 
 }
 
+/**
+ * @brief delete an order
+ * @param flightName the name of the flight to be deleted
+ */
 void Service::Customer::DeleteOrder(const char* flightName)
 {
 	if (strlen(flightName) >= (FLIGHT_NAME_MAX_SIZE / sizeof(char)))
@@ -161,4 +179,3 @@ void Service::Customer::DeleteOrder(const char* flightName)
 	flightVec[0].Current--;
 	engine->UpdateFlight(flightVec[0]);
 }
-

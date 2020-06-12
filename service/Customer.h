@@ -1,3 +1,11 @@
+/**
+ * @file Customer.h
+ * @brief Customer Service
+ * @details the interface to manipulate with customer
+ * @author yhl & Paul
+ * @version 0.0.1
+ */
+
 #ifndef FLIGHTTICKET_SERVICE_CUSTOMER_H_
 #define FLIGHTTICKET_SERVICE_CUSTOMER_H_
 
@@ -7,6 +15,9 @@
 
 namespace Service
 {
+	/**
+	 * @brief customer service
+	 */
 	class Customer
 	{
 	 public:

@@ -16,6 +16,14 @@ Service::Flight::Flight(const char* flightName)
 
 Service::Flight::~Flight() = default;
 
+/**
+ * @brief add a flight
+ * @param departure the departure of the flight
+ * @param destination the destination of the flight
+ * @param maxCapacity max capacity of the flight
+ * @param time the time to fly~
+ * @return true for success and false for fail
+ */
 bool Service::Flight::AddFlight(const char* departure, const char* destination, int maxCapacity, time_t time)
 {
 	auto lenDeparture = strlen(departure);
@@ -62,6 +70,9 @@ bool Service::Flight::AddFlight(const char* departure, const char* destination, 
 	return true;
 }
 
+/**
+ * @brief delete a flight
+ */
 void Service::Flight::DeleteFlight()
 {
 	QueryInfo();
@@ -80,6 +91,11 @@ void Service::Flight::DeleteFlight()
 
 }
 
+/**
+ * @brief print all flights' detail information matching the conditions
+ * @param departure the departure
+ * @param destination the destination
+ */
 void Service::Flight::PrintFlights(const char* departure, const char* destination)
 {
 	auto lenDeparture = strlen(departure);
@@ -122,6 +138,9 @@ void Service::Flight::PrintFlights(const char* departure, const char* destinatio
 	std::cout << "-------------------------" << std::endl;
 }
 
+/**
+ * @brief print all customers who bought the ticket of this flight
+ */
 void Service::Flight::PrintCustomers()
 {
 	QueryInfo();
@@ -149,6 +168,9 @@ void Service::Flight::PrintCustomers()
 	}
 }
 
+/**
+ * @brief fetch the flight's info
+ */
 void Service::Flight::QueryInfo()
 {
 	if (FlightId > 0) return;
