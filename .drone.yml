@@ -1,0 +1,10 @@
+kind: pipeline
+
+steps:
+- name: compile
+  image: ubuntu
+  commands:
+    - apt update && apt install -y g++-10 make cmake
+    - mkdir build && cd build
+    - cmake .. -DCMAKE_CXX_COMPILER=g++-10
+    - make
